@@ -1,7 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
+import AFNFactory from './AFN/AFNFactory';
 
 function App() {
+  const afn1 = AFNFactory.createBasicAFN('a');
+  const afn2 = AFNFactory.createBasicAFN('b');
+  const joinAFN = AFNFactory.joinAFN(afn1, afn2);
+  console.log(joinAFN);
   return (
     <div className="App">
       <header className="App-header">
