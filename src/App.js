@@ -3,6 +3,7 @@ import './App.css';
 import AFNFactory from './AFN/AFNFactory';
 import Plotter from './Plotter/plotter';
 import React from 'react';
+import Navbar from './components/navbar';
 
 class App extends React.Component{
   constructor(props){
@@ -20,6 +21,7 @@ class App extends React.Component{
   render(){
   return (
     <div className="App">
+      <Navbar/>
       <div id="ploter">
       </div>
       <header className="App-header">
