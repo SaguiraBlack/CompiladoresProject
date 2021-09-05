@@ -1,5 +1,7 @@
 import cytoscape from "cytoscape";
 
+// eslint-disable-next-line
+var cy;
 var style=[ // the stylesheet for the graph
 			{
 			selector: 'node',
@@ -29,33 +31,37 @@ var style=[ // the stylesheet for the graph
 			},
 		];
 
-var elements={
-	nodes:[
-		{ // node a
-			data: { id: '0' }
-		},
-		{ // node b
-			data: { id: '1' }
-		},
-	],
-	edges:[
-		{ // edge ab
-			data: { id: '0-1', source: '0', target: '1', label:'a' }
-		}
-	]
-} // list of graph elements to start with
-			
-function init() {
-	let cy = cytoscape({
+function init(elements) {
+	cy = cytoscape({
  		container: document.getElementById('ploter'), // container to render in
 		elements,
 		style,
-		layout: {
-			name: 'grid',
-			rows: 1
+		layout:{
+			name: "cose",
+			refresh: 30
 		}
 	});
 }
 
-const Plotter={init}
+function renderAFN(afn) {
+	let edges = [];
+	const nodes = afn.states.map( state =>{
+		const transitions = state.transitions.map( transition =>({
+			data: { id: `${state.id}-${transition.state.id}`, 
+					source: state.id, 
+					target: transition.state.id, 
+					label:transition.char }
+		}));
+		edges = edges.concat(transitions);
+		return {
+			data: { id: state.id}
+		}
+	});
+	init({
+		nodes,
+		edges
+	});
+
+}
+const Plotter={init, renderAFN}
 export default Plotter;
