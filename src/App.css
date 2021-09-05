@@ -1,5 +1,4 @@
 .App {
-  text-align: center;
 }
 
 .App-logo {
@@ -35,4 +34,12 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+#ploter{
+  width: 100%;
+  height: 500px;
+  margin-left:0;
+  display: block;
 }

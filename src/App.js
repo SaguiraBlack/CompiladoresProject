@@ -1,14 +1,27 @@
 import logo from './logo.svg';
 import './App.css';
 import AFNFactory from './AFN/AFNFactory';
+import Plotter from './Plotter/plotter';
+import React from 'react';
 
-function App() {
+class App extends React.Component{
+  constructor(props){
+  super(props);
   const afn1 = AFNFactory.createBasicAFN('a');
   const afn2 = AFNFactory.createBasicAFN('b');
   const joinAFN = AFNFactory.joinAFN(afn1, afn2);
   console.log(joinAFN);
+  }
+
+  componentDidMount(){
+    Plotter.init();
+  }
+
+  render(){
   return (
     <div className="App">
+      <div id="ploter">
+      </div>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -25,6 +38,7 @@ function App() {
       </header>
     </div>
   );
+  }
 }
 
 export default App;
