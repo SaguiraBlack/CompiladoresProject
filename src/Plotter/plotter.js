@@ -36,17 +36,25 @@ var style=[ // the stylesheet for the graph
 			style: {
 				"color": '#1169A3'
 			}
+			},
+			{
+			selector: ".accept",
+			style: {
+				"border-color": '#f00',
+				"border-width": '3'
 			}
+			},
 		];
 
-function init(elements) {
+function init(elements, containerId) {
+	console.log(elements);
 	elements.nodes[0].lock=true
 	elements.nodes[0].position={
 		x:100,
 		y:100
 	}
 	cy = cytoscape({
- 		container: document.getElementById('ploter'), // container to render in
+ 		container: document.getElementById(containerId), // container to render in
 		elements,
 		style,
 		layout:{
@@ -60,8 +68,9 @@ function init(elements) {
 	});
 }
 
-function renderAFN(afn) {
-	init(afn.getNodesAndEdges());
+function renderAFN(afn, containerId) {
+	console.log('dladf');
+	init(afn.getNodesAndEdges(), containerId);
 
 }
 const Plotter={init, renderAFN}

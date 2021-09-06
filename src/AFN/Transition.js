@@ -1,7 +1,7 @@
 export default class Transition{
-	constructor(symbol, stateId){
+	constructor(symbol, state){
 		this.symbol=symbol; //string
-		this.stateId=stateId;//int index
+		this.state=state;//state object
 	}
 }
 

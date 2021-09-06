@@ -5,88 +5,86 @@ import Transition from "./Transition";
 
 function createBasicAFN(symbol){
 	const nextState = new State(1, true);
-	const transitions = [new Transition(symbol, nextState.id)];
+	const transitions = [new Transition(symbol, nextState)];
 	const initState = new State(0, false, transitions);
-	let afn = new AFN([initState,nextState],
-						initState.id,
-						[nextState.id],
-						[symbol]);
+	let afn = new AFN([initState,nextState], //states
+						initState,
+						[nextState], //accepted States
+						[symbol]); //alphabet
 	return afn;
 }
-function updateAndPushState(transition, state, i, states, id, visited) {
-	const newState = JSON.parse(JSON.stringify(state));
-	newState.id = id;
-	if(visited.has(transition.stateId)){
-		console.log(transition.stateId);
-		console.log('siguiente existe'+i);
-		console.log(visited.get(transition.stateId).id);
-		newState.transitions[i].stateId = visited.get(transition.stateId).id;
+
+function copyAFN(afn) {
+	const statesCopy = JSON.parse(JSON.stringify(afn.states));
+	const initStateCopy = JSON.parse(JSON.stringify(afn.initState));
+	const acceptedStatesCopy = JSON.parse(JSON.stringify(afn.acceptedStates));
+	return new AFN(statesCopy, initStateCopy, acceptedStatesCopy, afn.alphabet);
+}
+function updateStateId( state, states, id, visited, transition) {
+	if(!visited.has(state._id)){
+		state.id=++id;
+		if (visited.has(transition?.state._id)) {
+			if(transition){
+				const state =visited.get(transition?.state._id) 
+				transition.state = state;
+			}
+			
+		}
+		states.push(state);
+		visited.set(state._id, state);
+		return id;
 	}else{
-		newState.transitions[i].stateId = id+1;
-	} 
-	states.push(newState);
-	return newState;
+	}
+	return id;
 }
 
-function joinAFN(afn1, afn2) {
+function joinAFN(afna, afnb) {
+    const afn1= AFNFactory.copyAFN(afna);
+    const afn2= AFNFactory.copyAFN(afnb);
 	let id = -1;
+	let visited1 = new Map();
+	let visited2 = new Map();
+	let endState = null;
+	let states = [];
 	const initState = new State(++id, false);
-	let states = [initState];
-	let idAccept= 0;
-	let visited = new Map();
-
+	states.push(initState);
+	visited1.set(initState._id, initState);
+	initState.transitions.push(new Transition(Symbols.EPSILON, afn1.initState));
+	initState.transitions.push(new Transition(Symbols.EPSILON, afn2.initState));
+	console.log('-----JOIN-------');
 	afn1.exploreAFN(
-		state =>{
-			if(state.transitions.length===0){
-				console.log(`${state.id} - - ${id}`);
-				const newState = JSON.parse(JSON.stringify(state));
-				newState.id = ++id;
-				newState.accept=false;
-				const endState = new State(++id, true);
-				idAccept = id;
-				newState.transitions.push(new Transition(Symbols.EPSILON, idAccept))
-				states.push(newState);
-				visited.set(state.id, newState);
-				states.push(endState);
-			}
-		},
 		(transition, state, i)=>{
-				console.log(`${state.id} - ${i} - ${id}`);
-				console.log(state.transitions);
-			if (!visited.has(state.id)) {
-				const newState = updateAndPushState(transition, state, i, states, ++id, visited);
-				visited.set(state.id, newState);
-				if(state.id===0) initState.transitions.push(new Transition(Symbols.EPSILON, newState.id))
-			} else {
-				const newState = visited.get(state.id);
-				newState.transitions[i].stateId=id+1;
-			}
-		}
+			id = updateStateId(state, states, id, visited1, transition);
+		},
+		state =>{ //last state
+				id = updateStateId(state, states, id, visited1);
+				if(endState===null){
+					endState = new State(++id, true);
+					states.push(endState);
+				}
+				state.accept=false;
+				state.transitions.push(new Transition(Symbols.EPSILON, endState));
+		},
+	)
+		
+	afn2.exploreAFN(
+		(transition, state, i)=>{
+			id = updateStateId(state, states, id, visited2, transition);
+		},
+		state =>{ //last state
+				id = updateStateId(state, states, id, visited2);
+				state.accept=false;
+				state.transitions.push(new Transition(Symbols.EPSILON, endState));
+		},
 	)
 
-	afn2.exploreAFN(
-		state =>{
-			if(state.transitions.length===0){
-				const newState = JSON.parse(JSON.stringify(state));
-				newState.id = ++id;
-				newState.accept=false;
-				newState.transitions.push(new Transition(Symbols.EPSILON, idAccept))
-				states.push(newState);
-			}
-		},
-		(transition, state, i)=>{
-			const newState = updateAndPushState(transition, state, i, states, ++id, visited);
-			if(state.id===0) initState.transitions.push(new Transition(Symbols.EPSILON, newState.id))
-		}
-	)
-		console.log(states);
 	let afn = new AFN(states,
-						initState.id,
-						[id],
+						initState,
+						[endState],
 						afn1.alphabet.concat(afn2.alphabet));
 	return afn
 }
-
+/*
 function concatAFN(afn1, afn2) {
 	let id = 0;
 	let states = [];
@@ -119,8 +117,8 @@ function concatAFN(afn1, afn2) {
 
 	let afn = new AFN(states, 0, [id], afn1.alphabet.concat(afn2.alphabet));
 	return afn
-}
+}*/
 
 
-const AFNFactory = {createBasicAFN, joinAFN, concatAFN};
+const AFNFactory = {createBasicAFN, copyAFN, joinAFN};
 export default AFNFactory;

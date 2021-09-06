@@ -1,48 +1,60 @@
 export default class AFN{
-	constructor(states, initStateId, acceptedStates, alphabet ){
+	constructor(states, initState, acceptedStates, alphabet ){
 		this.states=states; //array of State objects
-		this.initStateId=initStateId;// int index
-		this.acceptedStates=acceptedStates; //array of index
+		this.initState=initState;// state object
+		this.acceptedStates=acceptedStates; //array of state obj
 		this.alphabet=alphabet; //array of chars
 	}
 
-	get initState(){
-		return this.states[this.initStateId];
-	}
-
 	getNodesAndEdges() {
+		console.log('estos son los elementos');
 		let nodes = [];
 		let edges = [];
 		this.exploreAFN(
-			state=>{
-				nodes.push({
-					data: { id: state.id},
-				});			
-			}, 
 		(transition, state, i)=>{
+			nodes.push({
+				data: { id: state.id},
+				classes: state.accept?"accept":''
+			});
 			edges.push({
-				data: { id: `${state.id}-${transition.stateId}`, 
+				data: { id: `${state.id}-${transition.state.id}`, 
 						source: state.id, 
-						target: transition.stateId, 
+						target: transition.state.id, 
 						label:transition.symbol },
 				classes: transition.symbol!=='ε'?'symbol':''
 			})
+		},
+		state=>{
+			nodes.push({
+				data: { id: state.id},
+				classes: state.accept?"accept":''
+			});		
 		});
 		return {nodes, edges};
 	}
 
 	//Depth first exploration
-	exploreAFN(stateCallback, transitionCallback = ()=>{}) {
-		this.exploreAFNaux(this.initState, stateCallback, transitionCallback);
+	exploreAFN(transitionCallback = ()=>{}, endCallback) {
+		let visited = new Map();
+		this.exploreAFNaux(this.initState, visited, transitionCallback, endCallback);
 	}
 
-	exploreAFNaux(state, stateCallback, transitionCallback){
-		stateCallback(state);
-		if(state.transitions.length===0) return;
+	exploreAFNaux(state, visited, transitionCallback, endCallback){
+		if(visited.has(state._id)){
+			console.log('fin');
+			console.log(state);
+			return;
+		}
+		if(state.transitions.length===0){
+			endCallback(state);
+			visited.set(state._id);
+			return;
+		} 
 		for (let i = 0; i < state.transitions.length; i++) {
 			const transition = state.transitions[i];
 			transitionCallback(transition, state, i);	
-			this.exploreAFNaux(this.states[transition.stateId], stateCallback, transitionCallback);
+			visited.set(state._id);
+			this.exploreAFNaux(transition.state, visited, transitionCallback, endCallback);
 		}
 	}
 
