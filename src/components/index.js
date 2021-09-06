@@ -29,7 +29,7 @@ class Index extends React.Component {
                     </article>
                     <article className="m-auto ml-5">
                         <div className="bg-gray-light w-40 h-40 rounded-full overflow-hidden m-auto">
-                            <img src={TovarEspejo} alt="Palacios Lugo" className="w-full"/>
+                            <img src={TovarEspejo} alt="Tovar Espejo" className="w-full"/>
                         </div>
                         <div>
                             <h3 className="text-gray font-medium text-lg">Tovar Espejo M. Josefina</h3>
