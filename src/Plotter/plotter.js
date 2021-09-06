@@ -1,5 +1,7 @@
 import cytoscape from "cytoscape";
+import cola from 'cytoscape-cola';
 
+cytoscape.use( cola );
 // eslint-disable-next-line
 var cy;
 var style=[ // the stylesheet for the graph
@@ -29,38 +31,37 @@ var style=[ // the stylesheet for the graph
 				"text-margin-y": "-10px"
 			}
 			},
+			{
+			selector: ".symbol",
+			style: {
+				"color": '#1169A3'
+			}
+			}
 		];
 
 function init(elements) {
+	elements.nodes[0].lock=true
+	elements.nodes[0].position={
+		x:100,
+		y:100
+	}
 	cy = cytoscape({
  		container: document.getElementById('ploter'), // container to render in
 		elements,
 		style,
 		layout:{
 			name: "cose",
-			refresh: 30
+			randomize: false,
+			grid: true,
+			avoidOverlap: true,
+			avoidOverlapPadding:1,
+			roots: ''
 		}
 	});
 }
 
 function renderAFN(afn) {
-	let edges = [];
-	const nodes = afn.states.map( state =>{
-		const transitions = state.transitions.map( transition =>({
-			data: { id: `${state.id}-${transition.state.id}`, 
-					source: state.id, 
-					target: transition.state.id, 
-					label:transition.char }
-		}));
-		edges = edges.concat(transitions);
-		return {
-			data: { id: state.id}
-		}
-	});
-	init({
-		nodes,
-		edges
-	});
+	init(afn.getNodesAndEdges());
 
 }
 const Plotter={init, renderAFN}

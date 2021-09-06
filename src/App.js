@@ -6,11 +6,21 @@ import React from 'react';
 import Navbar from './components/navbar';
 
 class App extends React.Component{
-
+  constructor(){
+    super();
+    this.state={
+    }
+  }
   componentDidMount(){
     const afn1 = AFNFactory.createBasicAFN('a');
     const afn2 = AFNFactory.createBasicAFN('b');
-    const joinAFN = AFNFactory.joinAFN(afn1, afn2);
+    this.setState({afn:afn2});
+    //Plotter.renderAFN(afn2);
+    const concatAFN = AFNFactory.concatAFN(afn1, afn2);
+    const afn3 = AFNFactory.createBasicAFN('ultimo');
+    const concatAFN2 = AFNFactory.concatAFN(concatAFN, afn3);
+    const afn4 = AFNFactory.createBasicAFN('alterno');
+    const joinAFN = AFNFactory.joinAFN(concatAFN2, afn4);
     Plotter.renderAFN(joinAFN);
   }
 
@@ -18,8 +28,9 @@ class App extends React.Component{
   return (
     <div className="App">
       <Navbar/>
-      <div id="ploter" className="w-100 h-80 p-16">
+      <div id="ploter" className="w-100 h-screen p-16">
       </div>
+      <pre>{JSON.stringify(this.state.afn, null, 2)}</pre>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
