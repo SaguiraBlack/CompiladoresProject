@@ -4,7 +4,6 @@ import AFNFactory from './AFN/AFNFactory';
 import Plotter from './Plotter/plotter';
 import React from 'react';
 import Navbar from './components/navbar';
-import AFN from './AFN/AFN';
 
 class App extends React.Component{
   constructor(){
@@ -17,14 +16,20 @@ class App extends React.Component{
     const afn2 = AFNFactory.createBasicAFN('b');
     const afn3 = AFNFactory.createBasicAFN('ultimo');
     const afn4 = AFNFactory.createBasicAFN('alterno');
-    const joinAFN = AFNFactory.joinAFN(afn1, afn2);
+    const joinAFN = AFNFactory.joinAFN(afn3, afn4);
+    const joinAFN2 = AFNFactory.joinAFN(afn1, afn2);
+    const concatAFN = AFNFactory.concatAFN(joinAFN, joinAFN2);
+    //const concatAFN = AFNFactory.concatAFN(afn1, afn2);
+    //const concatAFN2 = AFNFactory.concatAFN(joinAFN, concatAFN);
+    Plotter.renderAFN(joinAFN, 'ploter');
+    Plotter.renderAFN(joinAFN2, 'ploter2');
+    Plotter.renderAFN(concatAFN, 'ploter3');
+    /*const joinAFN = AFNFactory.joinAFN(afn1, afn2);
     const joinAFN2 = AFNFactory.joinAFN(afn3, afn4);
-    const joinAFN3 = AFNFactory.joinAFN(joinAFN, joinAFN2);
     //const joinAFN3 = AFNFactory.joinAFN(joinAFN2, afn4);
     console.log(joinAFN3);
     Plotter.renderAFN(joinAFN3, 'ploter');
-    //Plotter.renderAFN(joinAFN2, 'ploter2');
-    //Plotter.renderAFN(joinAFN3, 'ploter3');
+    //Plotter.renderAFN(joinAFN3, 'ploter3');*/
   }
 
   render(){

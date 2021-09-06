@@ -69,7 +69,6 @@ function init(elements, containerId) {
 }
 
 function renderAFN(afn, containerId) {
-	console.log('dladf');
 	init(afn.getNodesAndEdges(), containerId);
 
 }

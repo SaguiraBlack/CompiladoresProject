@@ -7,7 +7,6 @@ export default class AFN{
 	}
 
 	getNodesAndEdges() {
-		console.log('estos son los elementos');
 		let nodes = [];
 		let edges = [];
 		this.exploreAFN(
@@ -41,8 +40,6 @@ export default class AFN{
 
 	exploreAFNaux(state, visited, transitionCallback, endCallback){
 		if(visited.has(state._id)){
-			console.log('fin');
-			console.log(state);
 			return;
 		}
 		if(state.transitions.length===0){
