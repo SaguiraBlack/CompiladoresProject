@@ -14,14 +14,13 @@ class App extends React.Component{
   componentDidMount(){
     const afn1 = AFNFactory.createBasicAFN('a');
     const afn2 = AFNFactory.createBasicAFN('b');
+    const afn3 = AFNFactory.createBasicAFN('ultimo');
+    const afn4 = AFNFactory.createBasicAFN('alterno');
     this.setState({afn:afn2});
     //Plotter.renderAFN(afn2);
-    const concatAFN = AFNFactory.concatAFN(afn1, afn2);
-    const afn3 = AFNFactory.createBasicAFN('ultimo');
-    const concatAFN2 = AFNFactory.concatAFN(concatAFN, afn3);
-    const afn4 = AFNFactory.createBasicAFN('alterno');
-    const joinAFN = AFNFactory.joinAFN(concatAFN2, afn4);
-    Plotter.renderAFN(joinAFN);
+    const concatAFN = AFNFactory.joinAFN(afn1, afn2);
+    Plotter.renderAFN(concatAFN);
+    const concatAFN2 = AFNFactory.joinAFN(concatAFN, afn3);
   }
 
   render(){
