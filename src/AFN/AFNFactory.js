@@ -2,6 +2,7 @@ import AFN from "./AFN";
 import State from "./State";
 import { Symbols } from "./Symbols";
 import Transition from "./Transition";
+import uniqid from 'uniqid';
 
 function createBasicAFN(symbol){
 	const nextState = new State(1, true);
@@ -17,6 +18,10 @@ function createBasicAFN(symbol){
 function copyAFN(afn) {
 	//do a method to generate unique id for each state on copy
 	const statesCopy = JSON.parse(JSON.stringify(afn.states));
+	for(let i = 0; i < statesCopy.length; i++){
+		statesCopy[i]._id = uniqid();
+	}
+	console.log(statesCopy);
 	const initStateCopy = JSON.parse(JSON.stringify(afn.initState));
 	const acceptedStatesCopy = JSON.parse(JSON.stringify(afn.acceptedStates));
 	return new AFN(statesCopy, initStateCopy, acceptedStatesCopy, afn.alphabet);
