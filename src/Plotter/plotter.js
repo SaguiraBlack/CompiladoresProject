@@ -47,7 +47,6 @@ var style=[ // the stylesheet for the graph
 		];
 
 function init(elements, containerId) {
-	console.log(elements);
 	elements.nodes[0].lock=true
 	elements.nodes[0].position={
 		x:100,

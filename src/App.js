@@ -14,24 +14,16 @@ class App extends React.Component{
   componentDidMount(){
     const afn1 = AFNFactory.createBasicAFN('a');
     const afn2 = AFNFactory.createBasicAFN('b');
-    const afn3 = AFNFactory.createBasicAFN('ultimo');
-    const afn4 = AFNFactory.createBasicAFN('alterno');
-    const joinAFN = AFNFactory.joinAFN(afn3, afn4);
-    const joinAFN2 = AFNFactory.joinAFN(afn1, afn2);
-    const concatAFN = AFNFactory.concatAFN(joinAFN, joinAFN2);
-    //const concatAFN = AFNFactory.concatAFN(afn1, afn2);
-    const joinSameAFN = AFNFactory.joinAFN(afn2, afn2);
-    //const concatAFN2 = AFNFactory.concatAFN(joinAFN, concatAFN);
+
+    const joinAFN = AFNFactory.joinAFN(afn1, afn1);
+    const joinAFN2 = AFNFactory.joinAFN(afn2, afn2);
+    const joinAFN3 = AFNFactory.joinAFN(joinAFN, joinAFN);
+
+    console.log(joinAFN);
     Plotter.renderAFN(joinAFN, 'ploter');
     Plotter.renderAFN(joinAFN2, 'ploter2');
-    Plotter.renderAFN(concatAFN, 'ploter3');
-    //Plotter.renderAFN(joinSameAFN, 'ploter3');
-    /*const joinAFN = AFNFactory.joinAFN(afn1, afn2);
-    const joinAFN2 = AFNFactory.joinAFN(afn3, afn4);
-    //const joinAFN3 = AFNFactory.joinAFN(joinAFN2, afn4);
-    console.log(joinAFN3);
-    Plotter.renderAFN(joinAFN3, 'ploter');
-    //Plotter.renderAFN(joinAFN3, 'ploter3');*/
+    Plotter.renderAFN(joinAFN3, 'ploter3');
+
   }
 
   render(){

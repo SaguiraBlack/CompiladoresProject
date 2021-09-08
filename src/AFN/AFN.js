@@ -33,7 +33,7 @@ export default class AFN{
 	}
 
 	//Depth first exploration
-	exploreAFN(transitionCallback = ()=>{}, endCallback) {
+	exploreAFN(transitionCallback , endCallback = ()=>{}) {
 		let visited = new Map();
 		this.exploreAFNaux(this.initState, visited, transitionCallback, endCallback);
 	}

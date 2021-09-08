@@ -8,24 +8,59 @@ function createBasicAFN(symbol){
 	const nextState = new State(1, true);
 	const transitions = [new Transition(symbol, nextState)];
 	const initState = new State(0, false, transitions);
-	let afn = new AFN([initState,nextState], //states
-						initState, //init state
-						[nextState], //accepted States
-						[symbol]); //alphabet
+	const states = [initState,nextState];
+	let afn = new AFN(states, //states
+					  states[0], //init state
+					  states[1], //accepted States
+					  [symbol]); //alphabet
+
 	return afn;
 }
 
-function copyAFN(afn) {
-	//do a method to generate unique id for each state on copy
-	const statesCopy = JSON.parse(JSON.stringify(afn.states));
-	for(let i = 0; i < statesCopy.length; i++){
-		statesCopy[i]._id = uniqid();
-	}
-	console.log(statesCopy);
-	const initStateCopy = JSON.parse(JSON.stringify(afn.initState));
-	const acceptedStatesCopy = JSON.parse(JSON.stringify(afn.acceptedStates));
-	return new AFN(statesCopy, initStateCopy, acceptedStatesCopy, afn.alphabet);
+function getStateClone(state) {
+	const stateClone = {...state};
+	stateClone.transitions=[];
+	stateClone._id=uniqid();
+	return stateClone;
 }
+
+function copyAFN(afn) {
+	let currentState = null;
+	let nextState = null;
+	let visited = new Map();
+	let statesCopy = [];
+	let acceptedStatesCopy = [];
+	afn.exploreAFN(
+		(transition, state, i)=>{
+			if(!visited.has(state.id)){
+				currentState=getStateClone(state);
+				nextState = getStateClone(transition.state);
+				//creating transition
+				currentState.transitions.push(new Transition(transition.symbol, nextState ));
+				//add to states
+				if(nextState.accept) acceptedStatesCopy.push(nextState);
+				statesCopy.push(currentState);
+				statesCopy.push(nextState);
+				visited.set(currentState.id, currentState);
+				visited.set(nextState.id, nextState);
+			}else{
+				currentState=visited.get(state.id);
+				if(!visited.has(transition.state.id)){
+					nextState = getStateClone(transition.state);
+				}else{
+					nextState=visited.get(transition.state.id);
+				}
+				currentState.transitions.push(new Transition(transition.symbol, nextState ));
+				//add to states
+				if(nextState.accept) acceptedStatesCopy.push(nextState);
+				statesCopy.push(nextState);
+				visited.set(nextState.id, nextState);
+			}
+		});
+	let afnCopy = new AFN(statesCopy, statesCopy[0], acceptedStatesCopy, afn.alphabet);
+	return afnCopy
+}
+
 function updateStateId( state, states, id, visited, transition) {
 	if(!visited.has(state._id)){
 		state.id=++id;
@@ -71,7 +106,6 @@ function joinAFN(afna, afnb) {
 				state.transitions.push(new Transition(Symbols.EPSILON, endState));
 		},
 	)
-		
 	afn2.exploreAFN(
 		(transition, state, i)=>{
 			id = updateStateId(state, states, id, visited2, transition);
