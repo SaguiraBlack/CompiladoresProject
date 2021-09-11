@@ -18,11 +18,14 @@ class App extends React.Component{
     const joinAFN = AFNFactory.joinAFN(afn1, afn1);
     const joinAFN2 = AFNFactory.joinAFN(afn2, afn2);
     const joinAFN3 = AFNFactory.joinAFN(joinAFN, joinAFN);
+    //const closurePlusAFN1 = AFNFactory.closurePlus(joinAFN3);
+    const optionalAFN1 = AFNFactory.optional(joinAFN3);
 
-    console.log(joinAFN);
-    Plotter.renderAFN(joinAFN, 'ploter');
-    Plotter.renderAFN(joinAFN2, 'ploter2');
-    Plotter.renderAFN(joinAFN3, 'ploter3');
+    console.log(optionalAFN1);
+    Plotter.renderAFN(optionalAFN1, 'ploter');
+    //Plotter.renderAFN(joinAFN, 'ploter');
+    //Plotter.renderAFN(joinAFN2, 'ploter2');
+    //Plotter.renderAFN(joinAFN3, 'ploter3');
 
   }
 

@@ -9,16 +9,20 @@ export default class AFN{
 	getNodesAndEdges() {
 		let nodes = [];
 		let edges = [];
+		let visited = new Set();
 		this.exploreAFN(
 		(transition, state, i)=>{
-			nodes.push({
-				data: { id: state.id},
-				classes: state.accept?"accept":''
-			});
+			if(!visited.has(state._id)){
+				nodes.push({
+					data: { id: state.id.toString()},
+					classes: state.accept?"accept":''
+				});
+				visited.add(state._id);
+			}
 			edges.push({
 				data: { id: `${state.id}-${transition.state.id}`, 
-						source: state.id, 
-						target: transition.state.id, 
+						source: state.id.toString(), 
+						target: transition.state.id.toString(), 
 						label:transition.symbol },
 				classes: transition.symbol!=='ε'?'symbol':''
 			})
