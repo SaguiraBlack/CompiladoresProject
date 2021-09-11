@@ -1,15 +1,17 @@
 import './App.css';
 import AFNFactory from './AFN/AFNFactory';
 import Plotter from './Plotter/plotter';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect} from 'react';
 import Navbar from './components/navbar';
 import Index from './components';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {decrement, incrementByAmount} from './app/slices/counterSlice';
+import { addAFN } from './app/slices/AFNSlice';
 
 function App (){
-  const [AFN, setAFN] = useState({});
-
-  const counter = useSelector(state=>  state);
+  const dispatch = useDispatch();
+  const counter = useSelector(state=>  state.counter.value);
+  const AFNlist = useSelector(state=>  state.AFNlist.value);
 
   useEffect(()=>{
     const afn1 = AFNFactory.createBasicAFN('a');
@@ -23,21 +25,31 @@ function App (){
     Plotter.renderAFN(joinAFN, 'ploter');
     Plotter.renderAFN(joinAFN2, 'ploter2');
     Plotter.renderAFN(joinAFN3, 'ploter3');
-    setAFN(joinAFN);
   }, []);
+
+  function generateAFN() {
+    const afn1 = AFNFactory.createBasicAFN('a');
+    dispatch(addAFN({
+      name: 'default',
+      afn: afn1
+    }))
+  }
 
   return (
     <div className="App">
       <Navbar/>
-      <button className="bg-blue text-white p-3 hover:bg-gray">Increment {counter}</button>
+      {counter}
+      <button className="bg-blue text-white p-2 m-1 hover:bg-gray" onClick={()=> dispatch(incrementByAmount(5))} >+ </button>
+      <button className="bg-blue text-white p-2 m-1 hover:bg-gray" onClick={()=> dispatch(decrement())}>- </button>
+      <button className="bg-blue text-white p-2 m-1 hover:bg-gray" onClick={generateAFN}>Generate AFN</button>
       <Index/>
-
       <div id="ploter" className="w-100 h-96 p-16"></div>
       <div id="ploter2" className="w-100 h-96 p-16"></div>
       <div id="ploter3" className="w-100 h-96 p-16"></div>
-      <pre className="text-left">{JSON.stringify(AFN, null, 2)}</pre>
+      <pre className="text-left">{JSON.stringify(AFNlist, null, 2)}</pre>
     </div>
   )
 }
+
 
 export default App;
