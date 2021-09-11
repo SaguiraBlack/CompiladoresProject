@@ -1,17 +1,17 @@
 import './App.css';
 import AFNFactory from './AFN/AFNFactory';
 import Plotter from './Plotter/plotter';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './components/navbar';
 import Index from './components';
+import {useSelector} from 'react-redux';
 
-class App extends React.Component{
-  constructor(){
-    super();
-    this.state={
-    }
-  }
-  componentDidMount(){
+function App (){
+  const [AFN, setAFN] = useState({});
+
+  const counter = useSelector(state=>  state);
+
+  useEffect(()=>{
     const afn1 = AFNFactory.createBasicAFN('a');
     const afn2 = AFNFactory.createBasicAFN('b');
 
@@ -23,21 +23,21 @@ class App extends React.Component{
     Plotter.renderAFN(joinAFN, 'ploter');
     Plotter.renderAFN(joinAFN2, 'ploter2');
     Plotter.renderAFN(joinAFN3, 'ploter3');
+    setAFN(joinAFN);
+  }, []);
 
-  }
-
-  render(){
   return (
     <div className="App">
       <Navbar/>
+      <button className="bg-blue text-white p-3 hover:bg-gray">Increment {counter}</button>
       <Index/>
+
       <div id="ploter" className="w-100 h-96 p-16"></div>
       <div id="ploter2" className="w-100 h-96 p-16"></div>
       <div id="ploter3" className="w-100 h-96 p-16"></div>
-      <pre>{JSON.stringify(this.state.afn, null, 2)}</pre>
+      <pre className="text-left">{JSON.stringify(AFN, null, 2)}</pre>
     </div>
-  );
-  }
+  )
 }
 
 export default App;

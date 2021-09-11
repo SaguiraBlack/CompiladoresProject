@@ -4,10 +4,30 @@ import './index.css';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {createStore} from 'redux';
+import reducers from './reducers';
+import { Provider } from 'react-redux';
+
+let store = createStore(reducers.counter);
+
+const increment = ()=>{
+  return{
+    type:'INCREMENT',
+  }
+}
+/*const decrement = ()=>{
+  return{
+    type:'DECREMENT',
+  }
+}*/
+store.dispatch(increment());
+store.dispatch(increment());
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
