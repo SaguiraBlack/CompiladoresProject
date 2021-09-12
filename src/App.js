@@ -1,17 +1,19 @@
 import './App.css';
 import AFNFactory from './AFN/AFNFactory';
 import Plotter from './Plotter/plotter';
-import React from 'react';
+import React, { useEffect} from 'react';
 import Navbar from './components/navbar';
 import Index from './components';
+import {useSelector, useDispatch} from 'react-redux';
+import {decrement, incrementByAmount} from './app/slices/counterSlice';
+import { addAFN } from './app/slices/AFNSlice';
 
-class App extends React.Component{
-  constructor(){
-    super();
-    this.state={
-    }
-  }
-  componentDidMount(){
+function App (){
+  const dispatch = useDispatch();
+  const counter = useSelector(state=>  state.counter.value);
+  const AFNlist = useSelector(state=>  state.AFNlist.value);
+
+  useEffect(()=>{
     const afn1 = AFNFactory.createBasicAFN('a');
     const afn2 = AFNFactory.createBasicAFN('b');
 
@@ -26,21 +28,31 @@ class App extends React.Component{
     //Plotter.renderAFN(joinAFN, 'ploter');
     //Plotter.renderAFN(joinAFN2, 'ploter2');
     //Plotter.renderAFN(joinAFN3, 'ploter3');
+  }, []);
 
+  function generateAFN() {
+    const afn1 = AFNFactory.createBasicAFN('a');
+    dispatch(addAFN({
+      name: 'default',
+      afn: afn1
+    }))
   }
 
-  render(){
   return (
     <div className="App">
       <Navbar/>
+      {counter}
+      <button className="bg-blue text-white p-2 m-1 hover:bg-gray" onClick={()=> dispatch(incrementByAmount(5))} >+ </button>
+      <button className="bg-blue text-white p-2 m-1 hover:bg-gray" onClick={()=> dispatch(decrement())}>- </button>
+      <button className="bg-blue text-white p-2 m-1 hover:bg-gray" onClick={generateAFN}>Generate AFN</button>
       <Index/>
       <div id="ploter" className="w-100 h-96 p-16"></div>
       <div id="ploter2" className="w-100 h-96 p-16"></div>
       <div id="ploter3" className="w-100 h-96 p-16"></div>
-      <pre>{JSON.stringify(this.state.afn, null, 2)}</pre>
+      <pre className="text-left">{JSON.stringify(AFNlist, null, 2)}</pre>
     </div>
-  );
-  }
+  )
 }
+
 
 export default App;

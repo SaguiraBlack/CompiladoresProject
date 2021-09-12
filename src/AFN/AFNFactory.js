@@ -195,7 +195,6 @@ function closureStar(afna) {
 
 function closurePlus(afna) {
 	const afn1= AFNFactory.copyAFN(afna);
-	let states = [];
 	afn1.exploreAFN(
 		(transition, state, i)=>{	
 		},
