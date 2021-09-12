@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from 'react-router-dom';
 import PalaciosLugo from '../img/palacios.jpg';
 import TovarEspejo from '../img/tovar.jpg';
 
@@ -10,14 +11,16 @@ class Index extends React.Component {
                     <h1 className="text-gray text-4xl font-bold p-1">Compiladores</h1>
                     <h2 className="text-gray text-2xl font-medium p-1">3CM16</h2>
                 </section>
-                <section id="projects" className="flex">
-                    <article className="m-auto">
-                        <div className="bg-gray-light m-auto w-60 h-32 rounded-t-lg"/>
-                        <div className="bg-blue text-white font-semibold p-1">
-                            Proyecto 1
-                        </div>
-                    </article>
-                </section>
+                <Link to="/Operations">
+                    <section id="projects" className="flex">
+                        <article className="m-auto">
+                            <div className="bg-gray-light m-auto w-60 h-32 rounded-t-lg"/>
+                            <div className="bg-blue text-white font-semibold p-1">
+                                Proyecto 1
+                            </div>
+                        </article>
+                    </section>
+                </Link>
                 <section id="students" className="flex pt-10">
                     <article className="m-auto mr-5">
                         <div className="bg-gray-light w-40 h-40 rounded-full overflow-hidden m-auto">
