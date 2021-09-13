@@ -30,33 +30,37 @@ function copyAFN(afn) {
 	let visited = new Map();
 	let statesCopy = [];
 	let acceptedStatesCopy = [];
-	afn.exploreAFN(
-		(transition, state, i)=>{
-			if(!visited.has(state.id)){
-				currentState=getStateClone(state);
+	const transitionCallback = (transition, state, i)=>{
+		if(!visited.has(state.id)){
+			currentState=getStateClone(state);
+			nextState = getStateClone(transition.state);
+			//creating transition
+			currentState.transitions.push(new Transition(transition.symbol, nextState ));
+			//add to states
+			if(nextState.accept) acceptedStatesCopy.push(nextState);
+			statesCopy.push(currentState);
+			statesCopy.push(nextState);
+			visited.set(currentState.id, currentState);
+			visited.set(nextState.id, nextState);
+		}else{
+			currentState=visited.get(state.id);
+			if(!visited.has(transition.state.id)){
 				nextState = getStateClone(transition.state);
-				//creating transition
-				currentState.transitions.push(new Transition(transition.symbol, nextState ));
-				//add to states
-				if(nextState.accept) acceptedStatesCopy.push(nextState);
-				statesCopy.push(currentState);
-				statesCopy.push(nextState);
-				visited.set(currentState.id, currentState);
-				visited.set(nextState.id, nextState);
 			}else{
-				currentState=visited.get(state.id);
-				if(!visited.has(transition.state.id)){
-					nextState = getStateClone(transition.state);
-				}else{
-					nextState=visited.get(transition.state.id);
-				}
-				currentState.transitions.push(new Transition(transition.symbol, nextState ));
-				//add to states
-				if(nextState.accept) acceptedStatesCopy.push(nextState);
-				statesCopy.push(nextState);
-				visited.set(nextState.id, nextState);
+				nextState=visited.get(transition.state.id);
 			}
-		});
+			currentState.transitions.push(new Transition(transition.symbol, nextState ));
+			//add to states
+			if(nextState.accept) acceptedStatesCopy.push(nextState);
+			statesCopy.push(nextState);
+			visited.set(nextState.id, nextState);
+		}
+	}
+	if (afn instanceof AFN) {
+		afn.exploreAFN(transitionCallback);
+	}else{
+		AFN.exploreAFNObj(afn.initState, transitionCallback);
+	}
 	let afnCopy = new AFN(statesCopy, statesCopy[0], acceptedStatesCopy, afn.alphabet);
 	return afnCopy
 }
@@ -119,7 +123,6 @@ function joinAFN(afna, afnb) {
 	let afn = new AFN(states, initState, [endState], afn1.alphabet.concat(afn2.alphabet));
 	return afn
 }
-
 
 function concatAFN(afna, afnb) {
     const afn1= AFNFactory.copyAFN(afna);

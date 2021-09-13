@@ -35,6 +35,28 @@ export default class AFN{
 		});
 		return {nodes, edges};
 	}
+	static exploreAFNObj(objInitState, transitionCallback , endCallback = ()=>{}) {
+		let visited = new Map();
+		function exploreAFNObjAux(state, visited, transitionCallback, endCallback) {
+			if(visited.has(state._id)){
+				return;
+			}
+			if(state.transitions.length===0){
+				endCallback(state);
+				visited.set(state._id);
+				return;
+			} 
+			for (let i = 0; i < state.transitions.length; i++) {
+				const transition = state.transitions[i];
+				transitionCallback(transition, state, i);	
+				visited.set(state._id);
+				exploreAFNObjAux(transition.state, visited, transitionCallback, endCallback);
+			}
+		}
+		exploreAFNObjAux(objInitState, visited, transitionCallback, endCallback);
+	}
+
+
 
 	//Depth first exploration
 	exploreAFN(transitionCallback , endCallback = ()=>{}) {

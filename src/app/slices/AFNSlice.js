@@ -15,7 +15,7 @@ export const AFNSlice = createSlice({
       })
     },
     deleteAFN: (state, action) => {
-      const index = state.value.indexOf(action.payload);
+      const index = action.payload;
       if (index > -1) {
         state.value.splice(index, 1);
       }

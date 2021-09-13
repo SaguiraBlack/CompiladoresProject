@@ -2,8 +2,7 @@ import cytoscape from "cytoscape";
 import cola from 'cytoscape-cola';
 
 cytoscape.use( cola );
-// eslint-disable-next-line
-var cy;
+var cy=null;
 var style=[ // the stylesheet for the graph
 			{
 			selector: 'node',
@@ -52,24 +51,35 @@ function init(elements, containerId) {
 		x:100,
 		y:100
 	}
-	cy = cytoscape({
- 		container: document.getElementById(containerId), // container to render in
-		elements,
-		style,
-		layout:{
-			name: "cose",
-			randomize: false,
-			grid: true,
-			avoidOverlap: true,
-			avoidOverlapPadding:1,
-			roots: ''
-		}
-	});
+	if (cy===null) {
+		cy = cytoscape({
+			container: document.getElementById(containerId), // container to render in
+			elements,
+			style,
+			layout:{
+				name: "cose",
+				randomize: false,
+				grid: true,
+				avoidOverlap: true,
+				avoidOverlapPadding:1,
+				roots: ''
+			}
+		});	
+	}else{
+        cy.json({elements, style});
+		cy.layout({
+				name: "cose",
+				randomize: false,
+				grid: true,
+				avoidOverlap: true,
+				avoidOverlapPadding:1,
+				roots: ''
+			}).run();
+	}
 }
 
 function renderAFN(afn, containerId) {
 	init(afn.getNodesAndEdges(), containerId);
-
 }
 const Plotter={init, renderAFN}
 export default Plotter;
