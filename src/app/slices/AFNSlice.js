@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  value: {},
+  value: [],
 }
 
 export const AFNSlice = createSlice({
@@ -9,14 +9,16 @@ export const AFNSlice = createSlice({
   initialState,
   reducers: {
     addAFN: (state, action) => {
-		if(state.value[action.payload.name]==null){
-			state.value[action.payload.name]= action.payload.afn;
-		}else{
-			state.value[action.payload.name+'_copy']= action.payload.afn;
-		}
+      state.value.push({
+        name:action.payload.name,
+        afn:action.payload.afn
+      })
     },
     deleteAFN: (state, action) => {
-		delete state.value[action.payload];
+      const index = state.value.indexOf(action.payload);
+      if (index > -1) {
+        state.value.splice(index, 1);
+      }
     }
   },
 })

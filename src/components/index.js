@@ -6,7 +6,7 @@ import TovarEspejo from '../img/tovar.jpg';
 class Index extends React.Component {
     render() {
         return (
-            <div className="bg-white h-screen">
+            <div className="bg-white h-screen text-center">
                 <section id="title" className="p-6">
                     <h1 className="text-gray text-4xl font-bold p-1">Compiladores</h1>
                     <h2 className="text-gray text-2xl font-medium p-1">3CM16</h2>

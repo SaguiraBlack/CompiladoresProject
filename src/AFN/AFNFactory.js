@@ -91,7 +91,6 @@ function joinAFN(afna, afnb) {
 	visited1.set(initState._id, initState);
 	initState.transitions.push(new Transition(Symbols.EPSILON, afn1.initState));
 	initState.transitions.push(new Transition(Symbols.EPSILON, afn2.initState));
-	console.log('-----JOIN-------');
 	afn1.exploreAFN(
 		(transition, state, i)=>{
 			id = updateStateId(state, states, id, visited1, transition);

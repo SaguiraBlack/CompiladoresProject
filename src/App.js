@@ -1,4 +1,3 @@
-import './App.css';
 import React from 'react';
 import Navbar from './components/navbar';
 
@@ -8,7 +7,7 @@ import Routes from './Routes';
 function App (){
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className="font-Montserrat">
         <Navbar/>
         <Routes/>
       </div>

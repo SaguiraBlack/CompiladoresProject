@@ -2,7 +2,11 @@ module.exports = {
   purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+          fontFamily: {
+            'Montserrat': ['Montserrat', 'sans-serif'],
+          },
+    },
     colors: {
       blue: {
         DEFAULT: '#1169A3',
@@ -12,6 +16,7 @@ module.exports = {
       },
       gray: {
         light: '#f0f0f0',
+        middle: '#dbdbdb',
         DEFAULT: '#222222'
       }
     }
