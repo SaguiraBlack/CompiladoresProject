@@ -5,6 +5,13 @@ import {useSelector, useDispatch} from 'react-redux';
 import {decrement, incrementByAmount} from '../../app/slices/counterSlice';
 import { addAFN } from '../../app/slices/AFNSlice';
 import AFNList from './AFNList';
+import AFNListOperations from './AFNListOperations';
+import Basic from './Basic';
+import Join from './Join';
+import Concat from './Concat';
+import ClosurePlus from './ClosurePlus';
+import ClosureStar from './ClosureStar';
+import Optional from './Optional';
 
 function AFNOperations (){
   const dispatch = useDispatch();
@@ -29,7 +36,7 @@ function AFNOperations (){
       name: 'AFN join a-a',
       afn: JSON.stringify(joinAFN)
     }));
-    Plotter.renderAFN(optionalAFN1, 'ploter');
+    //Plotter.renderAFN(optionalAFN1, 'ploter');
     //Plotter.renderAFN(joinAFN, 'ploter');
     //Plotter.renderAFN(joinAFN2, 'ploter2');
     //Plotter.renderAFN(joinAFN3, 'ploter3');
@@ -45,17 +52,19 @@ function AFNOperations (){
 
   return (
     <div className="flex">
-      <div className="bg-white h-screen w-4/5">
-        {counter}
-        <button className="bg-blue text-white p-2 m-1 hover:bg-gray" onClick={()=> dispatch(incrementByAmount(5))} >+ </button>
-        <button className="bg-blue text-white p-2 m-1 hover:bg-gray" onClick={()=> dispatch(decrement())}>- </button>
-        <button className="bg-blue text-white p-2 m-1 hover:bg-gray" onClick={generateAFN}>Generate AFN</button>
-        <div id="ploter" className="w-100 h-96 p-16"></div>
-        <div id="ploter2" className="w-100 h-96 p-16"></div>
-        <div id="ploter3" className="w-100 h-96 p-16"></div>
-        <pre className="text-left">{JSON.stringify(AFNlist, null, 2)}</pre>
+      <AFNListOperations/>
+      <div className="bg-white h-screen w-3/5">
+        <h1 className="text-gray text-center font-bold text-4xl p-6">
+          Creador de AFN's
+        </h1>
+        <Basic/>
+        <Join/>
+        <Concat/>
+        <ClosurePlus/>
+        <ClosureStar/>
+        <Optional/>
       </div>
-        <AFNList />
+      <AFNList/>
     </div>
   )
 }
