@@ -5,12 +5,6 @@ import { addAFN } from '../../app/slices/AFNSlice';
 import AFNList from './AFNList';
 import AFNPreview from '../AFNPreview';
 import AFNListOperations from './AFNListOperations';
-import Basic from './Basic';
-import Join from './Join';
-import Concat from './Concat';
-import ClosurePlus from './ClosurePlus';
-import ClosureStar from './ClosureStar';
-import Optional from './Optional';
 import Routes from './Routes';
 import { useRouteMatch } from 'react-router';
 

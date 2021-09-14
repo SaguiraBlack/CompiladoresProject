@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import AFNOperationsLink from "./AFNOperationsLink";
 
 class AFNListOperations extends React.Component {
