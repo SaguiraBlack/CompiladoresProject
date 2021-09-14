@@ -4,9 +4,20 @@ import { useDispatch} from 'react-redux';
 import { addAFN } from '../../app/slices/AFNSlice';
 import AFNList from './AFNList';
 import AFNPreview from '../AFNPreview';
+import AFNListOperations from './AFNListOperations';
+import Basic from './Basic';
+import Join from './Join';
+import Concat from './Concat';
+import ClosurePlus from './ClosurePlus';
+import ClosureStar from './ClosureStar';
+import Optional from './Optional';
+import Routes from './Routes';
+import { useRouteMatch } from 'react-router';
 
 function AFNOperations (){
   const dispatch = useDispatch();
+  let { path, url } = useRouteMatch();
+
   useEffect(()=>{
     const afn1 = AFNFactory.createBasicAFN('a');
     const afn2 = AFNFactory.createBasicAFN('b');
@@ -35,14 +46,15 @@ function AFNOperations (){
 
   return (
     <div className="flex">
-      <div className="bg-white h-screen w-4/5">
-        <AFNPreview />
-        <button className="bg-blue text-white p-2 m-1 hover:bg-gray" onClick={generateAFN}>Generate AFN</button>
-        <div id="ploter" className="w-100 h-96 p-16"></div>
-        <div id="ploter2" className="w-100 h-96 p-16"></div>
-        <div id="ploter3" className="w-100 h-96 p-16"></div>
+      <AFNPreview />
+      <AFNListOperations url={url}/>
+      <div className="bg-white h-screen w-3/5">
+        <h1 className="text-gray text-center font-bold text-4xl p-6">
+          Creador de AFN's
+        </h1>
+        <Routes path={path} />
       </div>
-        <AFNList />
+      <AFNList/>
     </div>
   )
 }
