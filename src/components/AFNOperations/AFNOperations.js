@@ -1,5 +1,5 @@
 import AFNFactory from '../../AFN/AFNFactory';
-import React, { useEffect} from 'react';
+import React, { useEffect, useState} from 'react';
 import { useDispatch} from 'react-redux';
 import { addAFN } from '../../app/slices/AFNSlice';
 import AFNList from './AFNList';
@@ -9,38 +9,33 @@ import Routes from './Routes';
 import { useRouteMatch } from 'react-router';
 
 function AFNOperations (){
-  const dispatch = useDispatch();
+  const [myAFNs, setMyAFNs] = useState([]);
+  const [previewIndex, setPreviewIndex] = useState(-1);
+  const [showPreview, setShowPreview] = useState(false);
   let { path, url } = useRouteMatch();
 
   useEffect(()=>{
     const afn1 = AFNFactory.createBasicAFN('a');
     const afn2 = AFNFactory.createBasicAFN('b');
     const joinAFN = AFNFactory.joinAFN(afn1, afn1);
-    dispatch(addAFN({
-      name: 'AFN a',
-      afn: JSON.stringify(afn1)
-    }));
-    dispatch(addAFN({
-      name: 'AFN b',
-      afn: JSON.stringify(afn2)
-    }));
-    dispatch(addAFN({
-      name: 'AFN join a-a',
-      afn: JSON.stringify(joinAFN)
-    }));
+    const closureAFN = AFNFactory.closurePlus(joinAFN);
+
+    pushAFN('afn a', afn1);
+    pushAFN('afn b', afn2);
+    pushAFN('joint a-a', joinAFN);
+    pushAFN('closure a-a', closureAFN);
+
   }, []);
 
-  function generateAFN() {
-    const afn1 = AFNFactory.createBasicAFN('a');
-    dispatch(addAFN({
-      name: 'default',
-      afn: JSON.stringify(afn1)
-    }))
+  function pushAFN(name, afn) {
+    setMyAFNs( arr=>[...arr, {name, afn}]);
   }
-
+  function removeAFN(index) {
+    setMyAFNs( arr=>arr.filter((item, i) => i!==index));
+  }
   return (
     <div className="flex">
-      <AFNPreview />
+      <AFNPreview myAFNs={myAFNs} previewIndex={previewIndex} />
       <AFNListOperations url={url}/>
       <div className="bg-white h-screen w-3/5">
         <h1 className="text-gray text-center font-bold text-4xl p-6">
@@ -48,7 +43,7 @@ function AFNOperations (){
         </h1>
         <Routes path={path} />
       </div>
-      <AFNList/>
+      <AFNList myAFNs={myAFNs} removeAFN={removeAFN} setPreviewIndex={(i)=>setPreviewIndex(i)} previewIndex={previewIndex}/>
     </div>
   )
 }

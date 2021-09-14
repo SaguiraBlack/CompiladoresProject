@@ -3,20 +3,25 @@ import { useDispatch, useSelector } from "react-redux";
 import AFNFactory from "../../AFN/AFNFactory";
 import { addAFN } from "../../app/slices/AFNSlice";
 import ClosurePlusImg from '../../img/closurePlus.png';
+import Plotter from "../../Plotter/plotter";
 
 function ClosurePlus () {
     const [name, setName] = useState('');
     const [afn1, setAfn1] = useState(0);
     const dispatch = useDispatch();
   	const AFNListData = useSelector(state=>  state.AFNlist.value);
+    const [closure, setClosure] = useState({});
 
     function submitAFN() {
         const AFN1 = AFNFactory.copyAFN(JSON.parse(AFNListData[afn1].afn));
         const closurePlus = AFNFactory.closurePlus(AFN1);
-        dispatch(addAFN({
+        /*dispatch(addAFN({
             name,
-            afn: JSON.stringify(closurePlus)
-        }))
+            afn: closurePlus
+        }))*/
+        console.log(closurePlus);
+        setClosure(closurePlus);
+        console.log(closure);
     }      
 
     return (
@@ -24,6 +29,7 @@ function ClosurePlus () {
             <h1 className="text-gray font-bold text-2xl text-left py-5">
                 Cerradura +
             </h1>
+            <div id="algo" className="w-100 h-full p-16"></div>
             <section className="flex">
                 <article className="m-auto mb-0 ml-0">
                     <input type="text" placeholder="Cerradura+1" className="ring-1 ring-gray-middle m-auto p-1 rounded"
@@ -46,7 +52,8 @@ function ClosurePlus () {
                 <img src={ClosurePlusImg} alt='ClosurePlus'></img>
             </div>
             <div>
-                <button className="bg-white text-blue ring-blue ring-1 font-semibold rounded-md p-1 w-1/4 m-3 hover:bg-gray hover:text-white hover:shadow-lg">
+                <button className="bg-white text-blue ring-blue ring-1 font-semibold rounded-md p-1 w-1/4 m-3 hover:bg-gray hover:text-white hover:shadow-lg"
+                    onClick={()=> Plotter.renderAFN(closure, 'algo')}>
                     Cancelar
                 </button>
                 <button className="bg-blue text-white font-semibold rounded-md p-1 w-1/4 m-3 hover:bg-gray hover:shadow-lg"
