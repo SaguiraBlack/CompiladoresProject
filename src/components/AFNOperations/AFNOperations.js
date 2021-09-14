@@ -1,7 +1,5 @@
 import AFNFactory from '../../AFN/AFNFactory';
 import React, { useEffect, useState} from 'react';
-import { useDispatch} from 'react-redux';
-import { addAFN } from '../../app/slices/AFNSlice';
 import AFNList from './AFNList';
 import AFNPreview from '../AFNPreview';
 import AFNListOperations from './AFNListOperations';
@@ -11,7 +9,6 @@ import { useRouteMatch } from 'react-router';
 function AFNOperations (){
   const [myAFNs, setMyAFNs] = useState([]);
   const [previewIndex, setPreviewIndex] = useState(-1);
-  const [showPreview, setShowPreview] = useState(false);
   let { path, url } = useRouteMatch();
 
   useEffect(()=>{
@@ -41,7 +38,7 @@ function AFNOperations (){
         <h1 className="text-gray text-center font-bold text-4xl p-6">
           Creador de AFN's
         </h1>
-        <Routes path={path} />
+        <Routes PATH={path} pushAFN={pushAFN} myAFNs={myAFNs}/>
       </div>
       <AFNList myAFNs={myAFNs} removeAFN={removeAFN} setPreviewIndex={(i)=>setPreviewIndex(i)} previewIndex={previewIndex}/>
     </div>

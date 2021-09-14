@@ -9,13 +9,27 @@ import Optional from "./Optional";
 
 const Routes = (props) => (
     <Switch>
-      <Route exact path={props.path} component={Basic} />
-      <Route exact path={`${props.path}/Basic`} component={Basic} />
-      <Route path={`${props.path}/Join`} component={Join} />
-      <Route path={`${props.path}/Concat`} component={Concat} />
-      <Route path={`${props.path}/ClosurePlus`} component={ClosurePlus} />
-      <Route path={`${props.path}/ClosureStar`} component={ClosureStar} />
-      <Route path={`${props.path}/Optional`} component={Optional} />
+      <Route exact path={props.PATH} >
+        <Basic {...props} />
+      </Route>
+      <Route path={`${props.PATH}/Basic`} >
+        <Basic {...props} />
+      </Route>
+      <Route path={`${props.PATH}/Join`} >
+        <Join {...props} />
+      </Route>
+      <Route path={`${props.PATH}/Concat`}>
+        <Concat {...props} />
+      </Route>
+      <Route path={`${props.PATH}/ClosurePlus`} >
+        <ClosurePlus {...props} />
+      </Route>
+      <Route path={`${props.PATH}/ClosureStar`}>
+        <ClosureStar {...props} />
+      </Route>
+      <Route path={`${props.PATH}/Optional`} >
+        <Optional {...props} />
+      </Route>
     </Switch>
 );
 

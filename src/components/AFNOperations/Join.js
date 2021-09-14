@@ -1,24 +1,17 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import AFNFactory from "../../AFN/AFNFactory";
-import { addAFN } from "../../app/slices/AFNSlice";
 import JoinImg from '../../img/join.png';
 
-function Join (){
+function Join (props){
     const [name, setName] = useState('');
     const [afn1, setAfn1] = useState(0);
     const [afn2, setAfn2] = useState(0);
-    const dispatch = useDispatch();
-  	const AFNListData = useSelector(state=>  state.AFNlist.value);
 
     function submitAFN() {
-        const AFN1 = AFNFactory.copyAFN(JSON.parse(AFNListData[afn1].afn));
-        const AFN2 = AFNFactory.copyAFN(JSON.parse(AFNListData[afn2].afn));
+        const AFN1 = props.myAFNs[afn1].afn;
+        const AFN2 = props.myAFNs[afn2].afn;
         const joinAFN = AFNFactory.joinAFN(AFN1, AFN2);
-        dispatch(addAFN({
-            name,
-            afn: JSON.stringify(joinAFN)
-        }))
+        props.pushAFN(name, joinAFN);
     }
 
     return(
@@ -36,7 +29,7 @@ function Join (){
                     <label htmlFor="AFN1" className="text-gray-middle">AFN1:</label>
                     <select name="AFN1" className="ring-1 ring-gray-middle m-auto p-1 rounded my-1 w-full"
                         onChange={e => setAfn1(e.target.value)}>
-                        {AFNListData.map((element, i)=>{
+                        {props.myAFNs.map((element, i)=>{
                             return(
                                 <option value={i} key={i}>{element.name}</option>
                             )
@@ -45,7 +38,7 @@ function Join (){
                     <label htmlFor="AFN2" className="text-gray-middle">AFN1:</label>
                     <select name="AFN2" className="ring-1 ring-gray-middle m-auto p-1 rounded my-1 w-full"
                         onChange={e => setAfn2(e.target.value)}>
-                        {AFNListData.map((element, i)=>{
+                        {props.myAFNs.map((element, i)=>{
                             return(
                                 <option value={i} key={i}>{element.name}</option>
                             )

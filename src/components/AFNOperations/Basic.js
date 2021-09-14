@@ -4,17 +4,13 @@ import AFNFactory from '../../AFN/AFNFactory';
 import { useDispatch } from "react-redux";
 import { addAFN } from "../../app/slices/AFNSlice";
 
-function Basic(){
+function Basic(props){
     const [name, setName] = useState('');
     const [symbol, setSymbol] = useState('');
-    const dispatch = useDispatch();
 
     function submitAFN() {
         const afn1 = AFNFactory.createBasicAFN(symbol);
-        dispatch(addAFN({
-            name,
-            afn: JSON.stringify(afn1)
-        }))
+        props.pushAFN(name, afn1);
     }
 
     return(

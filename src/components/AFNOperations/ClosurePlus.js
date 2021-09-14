@@ -1,27 +1,14 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import AFNFactory from "../../AFN/AFNFactory";
-import { addAFN } from "../../app/slices/AFNSlice";
 import ClosurePlusImg from '../../img/closurePlus.png';
-import Plotter from "../../Plotter/plotter";
 
-function ClosurePlus () {
+function ClosurePlus (props) {
     const [name, setName] = useState('');
     const [afn1, setAfn1] = useState(0);
-    const dispatch = useDispatch();
-  	const AFNListData = useSelector(state=>  state.AFNlist.value);
-    const [closure, setClosure] = useState({});
-
     function submitAFN() {
-        const AFN1 = AFNFactory.copyAFN(JSON.parse(AFNListData[afn1].afn));
+        const AFN1 = props.myAFNs[afn1].afn;
         const closurePlus = AFNFactory.closurePlus(AFN1);
-        /*dispatch(addAFN({
-            name,
-            afn: closurePlus
-        }))*/
-        console.log(closurePlus);
-        setClosure(closurePlus);
-        console.log(closure);
+        props.pushAFN(name, closurePlus);
     }      
 
     return (
@@ -40,7 +27,7 @@ function ClosurePlus () {
                     <label for="AFN1" className="text-gray-middle">AFN1:</label>
                     <select name="AFN1" className="ring-1 ring-gray-middle m-auto p-1 rounded my-1 w-full"
                         onChange={e => setAfn1(e.target.value)}>
-                        {AFNListData.map((element, i)=>{
+                        {props.myAFNs.map((element, i)=>{
                             return(
                                 <option value={i} key={i}>{element.name}</option>
                             )
@@ -52,8 +39,7 @@ function ClosurePlus () {
                 <img src={ClosurePlusImg} alt='ClosurePlus'></img>
             </div>
             <div>
-                <button className="bg-white text-blue ring-blue ring-1 font-semibold rounded-md p-1 w-1/4 m-3 hover:bg-gray hover:text-white hover:shadow-lg"
-                    onClick={()=> Plotter.renderAFN(closure, 'algo')}>
+                <button className="bg-white text-blue ring-blue ring-1 font-semibold rounded-md p-1 w-1/4 m-3 hover:bg-gray hover:text-white hover:shadow-lg">
                     Cancelar
                 </button>
                 <button className="bg-blue text-white font-semibold rounded-md p-1 w-1/4 m-3 hover:bg-gray hover:shadow-lg"
