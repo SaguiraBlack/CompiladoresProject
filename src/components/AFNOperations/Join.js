@@ -54,7 +54,7 @@ function Join (){
                 </article>
             </section>
             <div className="w-auto h-auto grid justify-items-center p-10">
-                <img src={JoinImg} alt='Basic'></img>
+                <img src={JoinImg} alt='Join'></img>
             </div>
             <div>
                 <button className="bg-white text-blue ring-blue ring-1 font-semibold rounded-md p-1 w-1/4 m-3 hover:bg-gray hover:text-white hover:shadow-lg">
