@@ -16,7 +16,6 @@ function ClosurePlus (props) {
             <h1 className="text-gray font-bold text-2xl text-left py-5">
                 Cerradura +
             </h1>
-            <div id="algo" className="w-100 h-full p-16"></div>
             <section className="flex">
                 <article className="m-auto mb-0 ml-0">
                     <input type="text" placeholder="Cerradura+1" className="ring-1 ring-gray-middle m-auto p-1 rounded"

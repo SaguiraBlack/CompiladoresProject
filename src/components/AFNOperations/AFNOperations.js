@@ -31,10 +31,10 @@ function AFNOperations (){
     setMyAFNs( arr=>arr.filter((item, i) => i!==index));
   }
   return (
-    <div className="flex">
+    <div className="flex pt-16 h-screen">
       <AFNPreview myAFNs={myAFNs} previewIndex={previewIndex} />
       <AFNListOperations url={url}/>
-      <div className="bg-white h-screen w-3/5">
+      <div className="bg-white w-3/5">
         <h1 className="text-gray text-center font-bold text-4xl p-6">
           Creador de AFN's
         </h1>

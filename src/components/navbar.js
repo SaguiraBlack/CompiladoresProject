@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 class Navbar extends React.Component {
     render() {
         return (
-            <nav className="bg-blue flex">
+            <nav className="bg-blue fixed top-0 w-full flex">
                 <Link to="/">
                     <div className="m-auto ml-0 text-xl px-8 py-5 text-white font-semibold">
                         <h1>Compiladores</h1>

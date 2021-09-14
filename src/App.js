@@ -3,6 +3,7 @@ import Navbar from './components/navbar';
 
 import {BrowserRouter} from 'react-router-dom';
 import Routes from './Routes';
+import Footer from './components/Footer';
 
 function App (){
   return (
@@ -10,6 +11,7 @@ function App (){
       <div className="font-Montserrat">
         <Navbar/>
         <Routes/>
+        <Footer/>
       </div>
     </BrowserRouter>
   )
