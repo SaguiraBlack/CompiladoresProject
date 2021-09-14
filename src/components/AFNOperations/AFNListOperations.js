@@ -2,9 +2,7 @@ import React from "react";
 import AFNOperationsLink from "./AFNOperationsLink";
 
 class AFNListOperations extends React.Component {
-    constructor(props){
-        super(props);
-    }
+
     render() {
         return (
         <div className="w-1/5 bg-gray-light pt-6  text-left flex-col">
