@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import BasicImg from '../../img/basic.png';
 import AFNFactory from '../../AFN/AFNFactory';
-import { useDispatch } from "react-redux";
-import { addAFN } from "../../app/slices/AFNSlice";
 
 function Basic(props){
     const [name, setName] = useState('');
     const [symbol, setSymbol] = useState('');
 
     function submitAFN() {
-        const afn1 = AFNFactory.createBasicAFN(symbol);
-        props.pushAFN(name, afn1);
+        const afn1 = AFNFactory.createBasicAFN(validSymbol());
+        props.pushAFN(validName(), afn1);
     }
 
+    const validName=()=>name===''?'AFN Básico':name;
+    const validSymbol=()=>symbol===''?'a':symbol;
     return(
         <div className="text-center mt-6 mx-36">
             <h1 className="text-gray font-bold text-2xl text-left py-5">
@@ -38,7 +38,7 @@ function Basic(props){
                     Cancelar
                 </button>
                 <button className="bg-blue text-white font-semibold rounded-md p-1 w-1/4 m-3 hover:bg-gray hover:shadow-lg"
-                        onClick={()=>submitAFN()}>
+                        onClick={submitAFN}>
                     Crear
                 </button>
             </div>

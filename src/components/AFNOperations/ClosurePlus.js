@@ -8,8 +8,9 @@ function ClosurePlus (props) {
     function submitAFN() {
         const AFN1 = props.myAFNs[afn1].afn;
         const closurePlus = AFNFactory.closurePlus(AFN1);
-        props.pushAFN(name, closurePlus);
+        props.pushAFN(validName(), closurePlus);
     }      
+    const validName=()=>name===''?'Cerradura +':name;
 
     return (
         <div className="text-center mt-6 mx-36">
@@ -42,7 +43,7 @@ function ClosurePlus (props) {
                     Cancelar
                 </button>
                 <button className="bg-blue text-white font-semibold rounded-md p-1 w-1/4 m-3 hover:bg-gray hover:shadow-lg"
-                    onClick={()=>submitAFN()}>
+                    onClick={submitAFN}>
                     Crear
                 </button>
             </div>

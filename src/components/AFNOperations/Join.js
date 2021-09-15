@@ -11,8 +11,9 @@ function Join (props){
         const AFN1 = props.myAFNs[afn1].afn;
         const AFN2 = props.myAFNs[afn2].afn;
         const joinAFN = AFNFactory.joinAFN(AFN1, AFN2);
-        props.pushAFN(name, joinAFN);
+        props.pushAFN(validName(), joinAFN);
     }
+    const validName=()=>name===''?'Union':name;
 
     return(
         <div className="text-center mt-6 mx-36">
@@ -54,7 +55,7 @@ function Join (props){
                     Cancelar
                 </button>
                 <button className="bg-blue text-white font-semibold rounded-md p-1 w-1/4 m-3 hover:bg-gray hover:shadow-lg"
-                        onClick={()=>submitAFN()}>
+                        onClick={submitAFN}>
                     Crear
                 </button>
             </div>

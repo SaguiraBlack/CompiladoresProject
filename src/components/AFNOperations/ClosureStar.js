@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import AFNFactory from "../../AFN/AFNFactory";
 import ClosureStarImg from '../../img/closureStar.png';
 
-class ClosureStar extends React.Component {
-    render() {
+function ClosureStar(props){
+    const [name, setName] = useState('');
+    const [afn1, setAfn1] = useState(0);
+    function submitAFN() {
+        const AFN1 = props.myAFNs[afn1].afn;
+        const closureStar = AFNFactory.closureStar(AFN1);
+        props.pushAFN(validName(), closureStar);
+    }
+    const validName=()=>name===''?'Cerradura *':name;
         return(
             <div className="text-center mt-6 mx-36">
                 <h1 className="text-gray font-bold text-2xl text-left py-5">
@@ -10,14 +18,19 @@ class ClosureStar extends React.Component {
                 </h1>
                 <section className="flex">
                     <article className="m-auto mb-0 ml-0">
-                        <input type="text" placeholder="Cerradura*1" className="ring-1 ring-gray-middle m-auto p-1 rounded">
+                        <input type="text" placeholder="Cerradura*1" className="ring-1 ring-gray-middle m-auto p-1 rounded"
+                            onChange={e => setName(e.target.value)}>
                         </input>
                     </article>
                     <article className="m-auto mb-0 mr-0 w-1/2 text-left">
                         <label for="AFN1" className="text-gray-middle">AFN1:</label>
-                        <select name="AFN1" className="ring-1 ring-gray-middle m-auto p-1 rounded my-1 w-full">
-                            <option value="prueba1">Prueba 1</option>
-                            <option value="prueba2">Prueba 2</option>
+                        <select name="AFN1" className="ring-1 ring-gray-middle m-auto p-1 rounded my-1 w-full"
+                                onChange={e => setAfn1(e.target.value)}>
+                                {props.myAFNs.map((element, i)=>{
+                                    return(
+                                        <option value={i} key={i}>{element.name}</option>
+                                    )
+                                })}
                         </select>
                     </article>
                 </section>
@@ -28,13 +41,13 @@ class ClosureStar extends React.Component {
                     <button className="bg-white text-blue ring-blue ring-1 font-semibold rounded-md p-1 w-1/4 m-3 hover:bg-gray hover:text-white hover:shadow-lg">
                         Cancelar
                     </button>
-                    <button className="bg-blue text-white font-semibold rounded-md p-1 w-1/4 m-3 hover:bg-gray hover:shadow-lg">
+                    <button className="bg-blue text-white font-semibold rounded-md p-1 w-1/4 m-3 hover:bg-gray hover:shadow-lg"
+                        onClick={submitAFN}>
                         Crear
                     </button>
                 </div>
             </div>
         );
-    }
 }
 
 export default ClosureStar;
