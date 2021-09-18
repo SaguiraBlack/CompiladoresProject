@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import AFNConverter from "../../../AFN/AFNConverter";
-import AFNFactory from "../../../AFN/AFNFactory";
 import OptionalImg from '../../../img/optional.png';
 
 function AFNtoAFD (props){
@@ -8,14 +7,11 @@ function AFNtoAFD (props){
     const [afn1, setAfn1] = useState(0);
     function submitAFN() {
         const AFN1 = props.myAFNs[afn1].afn;
-        const closure = AFNConverter.closure([AFN1.initState]);
-        console.log(closure);
+        const afnName =props.myAFNs[afn1].name; 
         const afd = AFNConverter.convertAFNtoAFD(AFN1);
-        console.log(afd);
-        /*const closurePlus = AFNFactory.optional(AFN1);
-        props.pushAFN(validName(), closurePlus);*/
+        props.pushAFN(validName(afnName), afd);
     }      
-    const validName=()=>name===''?'Optional':name;
+    const validName=(afnName)=>name===''?'AFD '+afnName:name;
     return(
         <div className="text-center mt-6 mx-36">
             <h1 className="text-gray font-bold text-2xl text-left py-5">

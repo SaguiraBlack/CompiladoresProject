@@ -14,13 +14,12 @@ function AFNOperations (){
   useEffect(()=>{
     const afn1 = AFNFactory.createBasicAFN('a');
     const afn2 = AFNFactory.createBasicAFN('b');
-    const joinAFN = AFNFactory.joinAFN(afn1, afn1);
-    const closureAFN = AFNFactory.closurePlus(joinAFN);
-
+    const joinAFN = AFNFactory.joinAFN(afn1, afn2);
+    const closureAFN = AFNFactory.closurePlus(afn1);
     pushAFN('afn a', afn1);
     pushAFN('afn b', afn2);
-    pushAFN('joint a-a', joinAFN);
-    pushAFN('closure a-a', closureAFN);
+    pushAFN('joint a-b', joinAFN);
+    pushAFN('closure a', closureAFN);
 
   }, []);
 
@@ -30,6 +29,7 @@ function AFNOperations (){
   function removeAFN(index) {
     setMyAFNs( arr=>arr.filter((item, i) => i!==index));
   }
+
   return (
     <div className="flex pt-16 h-screen">
       <AFNPreview myAFNs={myAFNs} previewIndex={previewIndex} />
@@ -38,9 +38,12 @@ function AFNOperations (){
         <h1 className="text-gray text-center font-bold text-4xl p-6">
           Creador de AFN's
         </h1>
-        <Routes PATH={path} pushAFN={pushAFN} myAFNs={myAFNs}/>
+        <Routes PATH={path} pushAFN={pushAFN} myAFNs={myAFNs} />
       </div>
-      <AFNList myAFNs={myAFNs} removeAFN={removeAFN} setPreviewIndex={(i)=>setPreviewIndex(i)} previewIndex={previewIndex}/>
+      <div className="flex-col w-1/5 h-full bg-gray-light">
+        <AFNList myAFNs={myAFNs} removeAFN={removeAFN} setPreviewIndex={(i)=>setPreviewIndex(i)} previewIndex={previewIndex} AFDList={false}/>
+        <AFNList myAFNs={myAFNs} removeAFN={removeAFN} setPreviewIndex={(i)=>setPreviewIndex(i)} previewIndex={previewIndex} AFDList={true}/>
+      </div>
     </div>
   )
 }

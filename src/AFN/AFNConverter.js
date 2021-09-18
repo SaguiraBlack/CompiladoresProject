@@ -1,8 +1,9 @@
+import AFN from "./AFN";
 import { Symbols } from "./Symbols";
 import Transition from "./Transition";
+import uniqid from 'uniqid';
 
 function convertAFNtoAFD(afn) {
-	console.log(afn.alphabet);
 	//initial AFD state
 	let id=-1;
 	const states = closure([afn.initState]);
@@ -16,18 +17,27 @@ function convertAFNtoAFD(afn) {
 
 	while (stack.length>0) {
 		const currentState = stack.pop();
-		afn.alphabet.forEach(symbol => {
+		for (let i = 0; i < afn.alphabet.length; i++) {
+			const symbol = afn.alphabet[i];
 			const newStateArr = closure(moveTo(currentState.states, symbol));
-			if (newStateArr.length>0 && !checkCoincidence(statesAFD, newStateArr)) { //if new StateArr isn't in the states
-				console.log('crea State');
-				const newState = new StateT(newStateArr, checkAccept(newStateArr), ++id);
-				stack.push(newState);
-				statesAFD.push(newState);			
+			const idx = checkCoincidence(statesAFD, newStateArr);
+			if (newStateArr.length>0) { //if new StateArr isn't in the states
+				let newState;
+				if (idx===-1) {
+					newState = new StateT(newStateArr, checkAccept(newStateArr), ++id);
+					stack.push(newState);
+					statesAFD.push(newState);			
+					//currentState.transitions.push(new Transition(symbol, newState));				
+				} else {
+					newState= statesAFD[idx];
+				}
 				currentState.transitions.push(new Transition(symbol, newState));
 			}
-		});	
+		};	
 	}
-	return statesAFD;
+	prepareAFD(statesAFD);
+	const acceptedStates = statesAFD.filter( state=> state.accept);
+	return new AFN(statesAFD, stateT, acceptedStates, afn.alphabet, true);
 }
 
 class StateT{
@@ -44,21 +54,29 @@ class StateT{
 	}
 }
 
+const prepareAFD = afdArray => afdArray.map(state => {
+		delete state.states;
+		delete state.statesId;
+		state._id = uniqid();
+		/*state.transitions.map( transition =>{
+			transition.state = transition.state.id;
+		});*/
+		return 	state;
+	});	
 function checkCoincidence(statesAFD, stateArr) {
 	let statesId = [];
 	stateArr.forEach(state => {
 		statesId.push(state._id);
 	});
-	console.log(JSON.stringify(statesId));
-	statesAFD.forEach(stateAFD => {
+	for (let i = 0; i < statesAFD.length; i++) {
+		const stateAFD = statesAFD[i];
 		//console.log(JSON.stringify(stateAFD.statesId));
 		const isEqual = JSON.stringify(stateAFD.statesId) === JSON.stringify(statesId);
 		if (isEqual) {
-			console.log('is equal!');
-			return true;	
-		}
-	});
-	return false;
+			return i;	
+		}	
+	}
+	return -1;
 }
 
 function checkAccept(stateArr) {

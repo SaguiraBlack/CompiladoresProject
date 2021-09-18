@@ -10,7 +10,6 @@ function AFNListItem (props){
 
   function onMouseOut(e){
     if(!e.relatedTarget?.classList.contains('AFNListItem')){
-      console.log('out');
       props.setPreviewIndex(-1);
     }
   }

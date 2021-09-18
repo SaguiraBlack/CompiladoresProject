@@ -162,7 +162,7 @@ function concatAFN(afna, afnb) {
 		},
 	)
 
-	let afn = new AFN(states, initState, [endState], afn1.alphabet.concat(afn2.alphabet));
+	let afn = new AFN(states, initState, [endState], concatWithoutDup(afn1.alphabet,afn2.alphabet));
 	return afn
 }
 

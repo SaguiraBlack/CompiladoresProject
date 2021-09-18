@@ -1,9 +1,10 @@
 export default class AFN{
-	constructor(states, initState, acceptedStates, alphabet ){
+	constructor(states, initState, acceptedStates, alphabet, isAFD=false ){
 		this.states=states; //array of State objects
 		this.initState=initState;// state object
 		this.acceptedStates=acceptedStates; //array of state obj
 		this.alphabet=alphabet; //array of chars
+		this.isAFD=isAFD;
 	}
 
 	getNodesAndEdges() {
