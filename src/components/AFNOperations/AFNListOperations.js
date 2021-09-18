@@ -12,7 +12,12 @@ class AFNListOperations extends React.Component {
             <AFNOperationsLink to={`${this.props.url}/Concat`} label='Concatenar' />
             <AFNOperationsLink to={`${this.props.url}/ClosurePlus`} label='Cerradura +' />
             <AFNOperationsLink to={`${this.props.url}/ClosureStar`} label='Cerradura *' />
-            <AFNOperationsLink to={`${this.props.url}/Optional`} label='Opcional' />
+            <AFNOperationsLink to={`${this.props.url}/Optional`} label='Optional' />
+            <AFNOperationsLink to={`${this.props.url}/Optional`} label='Expresion Regular a AFN' />
+            <AFNOperationsLink to={`${this.props.url}/Optional`} label='Union P/Analizador Léxico' />
+            <AFNOperationsLink to={`${this.props.url}/AFNtoAFD`} label='AFN a AFD' />
+            <AFNOperationsLink to={`${this.props.url}/Optional`} label='Analisar Cadena' />
+            <AFNOperationsLink to={`${this.props.url}/Optional`} label='Probar Analizador Léxico' />
 	    </div>
         );
     }

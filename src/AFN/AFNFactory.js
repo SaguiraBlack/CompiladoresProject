@@ -120,7 +120,7 @@ function joinAFN(afna, afnb) {
 		},
 	)
 
-	let afn = new AFN(states, initState, [endState], afn1.alphabet.concat(afn2.alphabet));
+	let afn = new AFN(states, initState, [endState], concatWithoutDup(afn1.alphabet,afn2.alphabet) );
 	return afn
 }
 
@@ -218,6 +218,8 @@ function optional(afna) {
 	)
 	return afn1;
 }
+
+const concatWithoutDup = (a,b) => a.concat(b.filter((item) => a.indexOf(item) < 0));
 
 const AFNFactory = {createBasicAFN, copyAFN, joinAFN, concatAFN, closurePlus, closureStar, optional};
 export default AFNFactory;
