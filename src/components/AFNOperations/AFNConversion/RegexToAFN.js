@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import AFNFactory from "../../AFN/AFNFactory";
-import OptionalImg from '../../img/optional.png';
+import AFNConverter from "../../../AFN/AFNConverter";
+import OptionalImg from '../../../img/optional.png';
 
-function Optional (props){
+function RegexToAFN (props){
     const [name, setName] = useState('');
-    const [afn1, setAfn1] = useState(0);
+    const [expression, setExpression] = useState('');
     function submitAFN() {
-        const AFN1 = props.myAFNs[afn1].afn;
-        const closurePlus = AFNFactory.optional(AFN1);
-        props.pushAFN(validName(), closurePlus);
-    }      
-    const validName=()=>name===''?'Optional':name;
+        const AFN = AFNConverter.convertRegexToAFN(expression);
+        //console.log(AFN);
+        props.pushAFN(validName(), AFN);
+    } 
+    const validName = ()=>name===''?'AFN Regex ':name;
     return(
         <div className="text-center mt-6 mx-36">
             <h1 className="text-gray font-bold text-2xl text-left py-5">
-                Opcional
+                Expresión Regular a AFN
             </h1>
             <section className="flex">
                 <article className="m-auto mb-0 ml-0">
@@ -22,16 +22,11 @@ function Optional (props){
                             onChange={e => setName(e.target.value)}>
                     </input>
                 </article>
-                <article className="m-auto mb-0 mr-0 w-1/2 text-left">
-                    <label htmlFor="AFN1" className="text-gray-middle">AFN1:</label>
-                    <select name="AFN1" className="ring-1 ring-gray-middle m-auto p-1 rounded my-1 w-full"
-                            onChange={e => setAfn1(e.target.value)}>
-                                {props.myAFNs.map((element, i)=>{
-                                    return(
-                                        <option value={i} key={i}>{element.name}</option>
-                                    )
-                                })}
-                    </select>
+                <article className="m-auto mb-0 mr-0 w-1/2 text-left ">
+                    <label htmlFor="AFN1" className="text-gray-middle block">Expresion Regular</label>
+                    <input type="text" placeholder="a|b" className="ring-1 ring-gray-middle m-auto p-1 rounded"
+                            onChange={e => setExpression(e.target.value)}>
+                    </input>
                 </article>
             </section>
             <div className="w-auto h-auto grid justify-items-center p-10">
@@ -50,4 +45,4 @@ function Optional (props){
     );
 }
 
-export default Optional;
+export default RegexToAFN;

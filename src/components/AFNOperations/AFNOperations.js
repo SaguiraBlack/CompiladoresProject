@@ -18,7 +18,7 @@ function AFNOperations (){
     const closureAFN = AFNFactory.closurePlus(afn1);
     pushAFN('afn a', afn1);
     pushAFN('afn b', afn2);
-    pushAFN('joint a-b', joinAFN);
+    pushAFN('join a-b', joinAFN);
     pushAFN('closure a', closureAFN);
 
   }, []);

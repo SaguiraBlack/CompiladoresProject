@@ -33,7 +33,12 @@ function copyAFN(afn) {
 	const transitionCallback = (transition, state, i)=>{
 		if(!visited.has(state.id)){
 			currentState=getStateClone(state);
-			nextState = getStateClone(transition.state);
+			if(!visited.has(transition.state.id)){
+				nextState = getStateClone(transition.state);
+			}else{
+				nextState=visited.get(transition.state.id);
+			}
+			//nextState = getStateClone(transition.state);
 			//creating transition
 			currentState.transitions.push(new Transition(transition.symbol, nextState ));
 			//add to states
@@ -46,13 +51,13 @@ function copyAFN(afn) {
 			currentState=visited.get(state.id);
 			if(!visited.has(transition.state.id)){
 				nextState = getStateClone(transition.state);
+				statesCopy.push(nextState);
 			}else{
 				nextState=visited.get(transition.state.id);
 			}
 			currentState.transitions.push(new Transition(transition.symbol, nextState ));
 			//add to states
 			if(nextState.accept) acceptedStatesCopy.push(nextState);
-			statesCopy.push(nextState);
 			visited.set(nextState.id, nextState);
 		}
 	}
@@ -127,43 +132,34 @@ function joinAFN(afna, afnb) {
 function concatAFN(afna, afnb) {
     const afn1= AFNFactory.copyAFN(afna);
     const afn2= AFNFactory.copyAFN(afnb);
-	let id = -1;
-	let visited1 = new Map();
+
+	let id = afn1.states.length-1;
 	let visited2 = new Map();
 	let endState = null;
-	let states = [];
-	const initState = new State(++id, false);
-	states.push(initState);
-	visited1.set(initState._id, initState);
-	initState.transitions.push(new Transition(Symbols.EPSILON, afn1.initState));
 
-	afn1.exploreAFN(
-		(transition, state, i)=>{
-			id = updateStateId(state, states, id, visited1, transition);
-		},
-		state =>{ //last state
-				id = updateStateId(state, states, id, visited1);
-				state.accept=false;
-				state.transitions.push(new Transition(Symbols.EPSILON, afn2.initState));
-		},
-	)
+	afn1.acceptedStates.forEach(state => {
+		state.accept=false;
+		state.transitions.push(new Transition(Symbols.EPSILON, afn2.initState))	
+	});
+				
+
 	afn2.exploreAFN(
 		(transition, state, i)=>{
-			id = updateStateId(state, states, id, visited2, transition);
+			id = updateStateId(state, afn1.states, id, visited2, transition);
 		},
 		state =>{ //last state
-				id = updateStateId(state, states, id, visited2);
+				id = updateStateId(state, afn1.states, id, visited2);
 				if(endState===null){
 					endState = new State(++id, true);
-					states.push(endState);
+					afn1.states.push(endState);
 				}
 				state.accept=false;
 				state.transitions.push(new Transition(Symbols.EPSILON, endState));
 		},
 	)
 
-	let afn = new AFN(states, initState, [endState], concatWithoutDup(afn1.alphabet,afn2.alphabet));
-	return afn
+	afn1.alphabet = concatWithoutDup(afn1.alphabet,afn2.alphabet)
+	return afn1
 }
 
 function closureStar(afna) {

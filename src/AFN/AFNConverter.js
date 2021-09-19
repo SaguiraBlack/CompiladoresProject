@@ -2,6 +2,8 @@ import AFN from "./AFN";
 import { Symbols } from "./Symbols";
 import Transition from "./Transition";
 import uniqid from 'uniqid';
+import infixToPostfixRe from "./infix-to-postfix-regexp";
+import AFNFactory from "./AFNFactory";
 
 function convertAFNtoAFD(afn) {
 	//initial AFD state
@@ -38,6 +40,53 @@ function convertAFNtoAFD(afn) {
 	prepareAFD(statesAFD);
 	const acceptedStates = statesAFD.filter( state=> state.accept);
 	return new AFN(statesAFD, stateT, acceptedStates, afn.alphabet, true);
+}
+
+function convertRegexToAFN(expression) {
+    const postFix = infixToPostfixRe(expression); 
+    console.log(postFix.toString());
+	let AFNStack = [];
+	let afnA;
+	let afnB;
+	let AFN;
+
+	for (let i = 0; i < postFix.length; i++) {
+		const char = postFix[i];
+		switch (char) {
+			case '.':
+				afnA = AFNStack.pop();				
+				afnB = AFNStack.pop();				
+				AFN = AFNFactory.concatAFN(afnB, afnA);
+				AFNStack.push(AFN);
+				break;
+			case '|':
+				afnA = AFNStack.pop();				
+				afnB = AFNStack.pop();				
+				AFN = AFNFactory.joinAFN(afnB, afnA);
+				AFNStack.push(AFN);
+				break;	
+			case '+':
+				afnA = AFNStack.pop();				
+				AFN = AFNFactory.closurePlus(afnA);
+				AFNStack.push(AFN);
+				break;	
+			case '*':
+				afnA = AFNStack.pop();				
+				AFN = AFNFactory.closureStar(afnA);
+				AFNStack.push(AFN);
+				break;	
+			case '?':
+				afnA = AFNStack.pop();				
+				AFN = AFNFactory.optional(afnA);
+				AFNStack.push(AFN);
+				break;
+			default:
+				AFN = AFNFactory.createBasicAFN(char);
+				AFNStack.push(AFN);
+				break;
+		}	
+	}
+	return AFNStack.pop();
 }
 
 class StateT{
@@ -111,5 +160,5 @@ function moveTo(stateArr, symbol) {
 	return newStateArr;
 }
 
-const AFNConverter = { closure, moveTo, convertAFNtoAFD};
+const AFNConverter = { closure, moveTo, convertAFNtoAFD, convertRegexToAFN};
 export default AFNConverter;

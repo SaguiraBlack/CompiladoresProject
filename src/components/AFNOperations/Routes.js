@@ -1,6 +1,7 @@
 import React from "react";
 import { Switch, Route} from "react-router-dom";
 import AFNtoAFD from "./AFNConversion/AFNtoAFD";
+import RegexToAFN from "./AFNConversion/RegexToAFN";
 import Basic from "./Basic";
 import ClosurePlus from "./ClosurePlus";
 import ClosureStar from "./ClosureStar";
@@ -30,6 +31,9 @@ const Routes = (props) => (
       </Route>
       <Route path={`${props.PATH}/Optional`} >
         <Optional {...props} />
+      </Route>
+      <Route path={`${props.PATH}/RegexToAFN`} >
+        <RegexToAFN {...props} />
       </Route>
       <Route path={`${props.PATH}/AFNtoAFD`} >
         <AFNtoAFD {...props} />

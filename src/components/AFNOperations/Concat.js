@@ -28,7 +28,7 @@ function Concat (props) {
                     </input>
                 </article>
                 <article className="m-auto mb-0 mr-0 w-1/2 text-left">
-                    <label for="AFN1" className="text-gray-middle">AFN1:</label>
+                    <label htmlFor="AFN1" className="text-gray-middle">AFN1:</label>
                     <select name="AFN1" className="ring-1 ring-gray-middle m-auto p-1 rounded my-1 w-full"
                         onChange={e => setAfn1(e.target.value)}>
                         {props.myAFNs.map((element, i)=>{
@@ -37,7 +37,7 @@ function Concat (props) {
                             )
                         })}
                     </select>
-                    <label for="AFN2" className="text-gray-middle">AFN1:</label>
+                    <label htmlFor="AFN2" className="text-gray-middle">AFN1:</label>
                     <select name="AFN2" className="ring-1 ring-gray-middle m-auto p-1 rounded my-1 w-full"
                         onChange={e => setAfn2(e.target.value)}>
                         {props.myAFNs.map((element, i)=>{
