@@ -25,6 +25,7 @@
  */
 
 // helper, top element of an array w/o removing it
+// eslint-disable-next-line no-extend-native
 Array.prototype.peek = function () {
   return this[this.length - 1];
 };
@@ -37,7 +38,7 @@ Array.prototype.peek = function () {
 
 function addConcatOp(expression) {
   let stack = [];
-  const invalidCharToConcat = ['+','|',')']
+  const invalidCharToConcat = ['+','*','?','|',')']
   const invalidCurrentChar = ['(','|']
   for (let i = 0; i < expression.length; i++) {
     const char = expression[i];
