@@ -18,10 +18,12 @@ function AFNOperations (){
     const afn2 = AFNFactory.createBasicAFN('b');
     const joinAFN = AFNFactory.joinAFN(afn1, afn2);
     const closureAFN = AFNFactory.closurePlus(afn1);
+    const afd = AFNConverter.convertAFNtoAFD(joinAFN);
     pushAFN('afn a', afn1);
     pushAFN('afn b', afn2);
     pushAFN('join a-b', joinAFN);
     pushAFN('closure a', closureAFN);
+    pushAFN('AFD join', afd);
 
   }, []);
 

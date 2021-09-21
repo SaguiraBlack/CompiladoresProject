@@ -1,6 +1,8 @@
 import React from "react";
 import { Switch, Route} from "react-router-dom";
 import AFNtoAFD from "./AFNConversion/AFNtoAFD";
+import AnalyzeString from "./AFNConversion/AnalyzeString";
+import AssignTokens from "./AFNConversion/AssignTokens";
 import RegexToAFN from "./AFNConversion/RegexToAFN";
 import Basic from "./Basic";
 import ClosurePlus from "./ClosurePlus";
@@ -37,6 +39,12 @@ const Routes = (props) => (
       </Route>
       <Route path={`${props.PATH}/AFNtoAFD`} >
         <AFNtoAFD {...props} />
+      </Route>
+      <Route path={`${props.PATH}/AssignTokens`} >
+        <AssignTokens {...props} />
+      </Route>
+      <Route path={`${props.PATH}/AnalyzeString`} >
+        <AnalyzeString {...props} />
       </Route>
     </Switch>
 );

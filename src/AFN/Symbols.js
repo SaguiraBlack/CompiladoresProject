@@ -1,1 +1,1 @@
-export const Symbols={EPSILON:"ε", END:"´"};
+export const Symbols={EPSILON:"ε", END:0};

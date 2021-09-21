@@ -14,11 +14,11 @@ class AFNListOperations extends React.Component {
             <AFNOperationsLink to={`${this.props.url}/ClosureStar`} label='Cerradura *' />
             <AFNOperationsLink to={`${this.props.url}/Optional`} label='Optional' />
 			<h2 className="text-blue font-semibold pl-8 py-3 text-lg">Conversiones</h2>
-            <AFNOperationsLink to={`${this.props.url}/Optional`} label='Ver tabla AFD' />
             <AFNOperationsLink to={`${this.props.url}/RegexToAFN`} label='Expresion Regular a AFN' />
             <AFNOperationsLink to={`${this.props.url}/AFNtoAFD`} label='AFN a AFD' />
-            <AFNOperationsLink to={`${this.props.url}/Optional`} label='Union P/Analizador Léxico' />
-            <AFNOperationsLink to={`${this.props.url}/Optional`} label='Analizar Cadena' />
+            <AFNOperationsLink to={`${this.props.url}/Optional`} label='Ver tabla AFD' />
+            <AFNOperationsLink to={`${this.props.url}/AssignTokens`} label='Asignar Tokens' />
+            <AFNOperationsLink to={`${this.props.url}/AnalyzeString`} label='Analizar Cadena' />
 	    </div>
         );
     }
