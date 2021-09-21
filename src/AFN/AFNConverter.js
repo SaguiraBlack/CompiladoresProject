@@ -4,6 +4,7 @@ import Transition from "./Transition";
 import uniqid from 'uniqid';
 import infixToPostfixRe from "./infix-to-postfix-regexp";
 import AFNFactory from "./AFNFactory";
+import State from "./State";
 
 function convertAFNtoAFD(afn) {
 	//initial AFD state
@@ -40,6 +41,48 @@ function convertAFNtoAFD(afn) {
 	prepareAFD(statesAFD);
 	const acceptedStates = statesAFD.filter( state=> state.accept);
 	return new AFN(statesAFD, stateT, acceptedStates, afn.alphabet, true);
+}
+
+function getAFDTable(afd) {
+	let table = [afd.states.length];
+	afd.states.forEach(state => {
+		table[state.id] = Array(257).fill(-1);
+		if (state.accept) table[state.id][256] = state.token;
+		state.transitions.forEach(transition => {
+			const ascii = transition.symbol.charCodeAt(0);
+			table[state.id][ascii] = transition.state.id;
+		});		
+	});
+
+	return table;
+}
+
+function tableToAFD(arr) {
+	const states = [];
+	const acceptedStates = [];
+	const alphabet = [];
+
+	arr.forEach((stateArr,i) => {
+		const state = new State(i, stateArr[256]!==-1, [], stateArr[256]);
+		if (stateArr[256]!==-1) acceptedStates.push(state);
+		states.push(state);
+		stateArr.forEach( (element,j) => {
+			if (j<256) {
+				if (element!==-1) {
+					const char = String.fromCharCode(j);
+					alphabet.push(char);
+					state.transitions.push(new Transition(char, element));
+				}			
+			}
+		});
+	});
+	states.forEach(state => {
+		state.transitions.forEach(transition => {
+			transition.state = states[transition.state];
+		});		
+	});
+
+	return new AFN(states, states[0], acceptedStates, [...new Set(alphabet)], true);
 }
 
 function convertRegexToAFN(expression) {
@@ -112,6 +155,7 @@ const prepareAFD = afdArray => afdArray.map(state => {
 		});*/
 		return 	state;
 	});	
+
 function checkCoincidence(statesAFD, stateArr) {
 	let statesId = [];
 	stateArr.forEach(state => {
@@ -160,5 +204,5 @@ function moveTo(stateArr, symbol) {
 	return newStateArr;
 }
 
-const AFNConverter = { closure, moveTo, convertAFNtoAFD, convertRegexToAFN};
+const AFNConverter = { closure, moveTo, convertAFNtoAFD, convertRegexToAFN, getAFDTable, tableToAFD};
 export default AFNConverter;

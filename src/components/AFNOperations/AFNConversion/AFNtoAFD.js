@@ -10,6 +10,8 @@ function AFNtoAFD (props){
         const afnName =props.myAFNs[afn1].name; 
         const afd = AFNConverter.convertAFNtoAFD(AFN1);
         props.pushAFN(validName(afnName), afd);
+        console.log(afd);
+        console.log(AFNConverter.getAFDTable(afd));
     }      
     const validName=(afnName)=>name===''?'AFD '+afnName:name;
     return(
