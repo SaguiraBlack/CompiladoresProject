@@ -105,13 +105,14 @@ function joinAFN(afna, afnb) {
 			id = updateStateId(state, states, id, visited1, transition);
 		},
 		state =>{ //last state
-				id = updateStateId(state, states, id, visited1);
-				if(endState===null){
-					endState = new State(++id, true);
-					states.push(endState);
-				}
-				state.accept=false;
-				state.transitions.push(new Transition(Symbols.EPSILON, endState));
+			console.log('last');
+			id = updateStateId(state, states, id, visited1);
+			if(endState===null){
+				endState = new State(++id, true);
+				states.push(endState);
+			}
+			state.accept=false;
+			state.transitions.push(new Transition(Symbols.EPSILON, endState));
 		},
 	)
 	afn2.exploreAFN(

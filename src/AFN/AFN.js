@@ -69,16 +69,17 @@ export default class AFN{
 		if(visited.has(state._id)){
 			return;
 		}
-		if(state.transitions.length===0){
-			endCallback(state);
-			visited.set(state._id);
-			return;
-		} 
+ 
 		for (let i = 0; i < state.transitions.length; i++) {
 			const transition = state.transitions[i];
 			transitionCallback(transition, state, i);	
 			visited.set(state._id);
 			this.exploreAFNaux(transition.state, visited, transitionCallback, endCallback);
+		}
+		if(state.accept){
+			endCallback(state);
+			visited.set(state._id);
+			return;
 		}
 	}
 

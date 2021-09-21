@@ -11,6 +11,7 @@ function Join (props){
         const AFN1 = props.myAFNs[afn1].afn;
         const AFN2 = props.myAFNs[afn2].afn;
         const joinAFN = AFNFactory.joinAFN(AFN1, AFN2);
+        console.log(joinAFN);
         props.pushAFN(validName(), joinAFN);
     }
     const validName=()=>name===''?'Union':name;

@@ -4,6 +4,7 @@ import AFNtoAFD from "./AFNConversion/AFNtoAFD";
 import AnalyzeString from "./AFNConversion/AnalyzeString";
 import AssignTokens from "./AFNConversion/AssignTokens";
 import RegexToAFN from "./AFNConversion/RegexToAFN";
+import ViewAFDTable from "./AFNConversion/VIewAFDTable";
 import Basic from "./Basic";
 import ClosurePlus from "./ClosurePlus";
 import ClosureStar from "./ClosureStar";
@@ -45,6 +46,9 @@ const Routes = (props) => (
       </Route>
       <Route path={`${props.PATH}/AnalyzeString`} >
         <AnalyzeString {...props} />
+      </Route>
+      <Route path={`${props.PATH}/ViewAFDTable`} >
+        <ViewAFDTable {...props} />
       </Route>
     </Switch>
 );
