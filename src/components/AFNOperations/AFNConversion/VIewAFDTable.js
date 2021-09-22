@@ -34,18 +34,32 @@ function ViewAFDTable (props){
                 </article>
             </section>
 
-            <div className="w-auto h-auto grid justify-items-center p-10">
+            <div className="w-auto h-auto grid justify-items-center p-10 overflow-x-scroll">
                 <table className="divide-y divide-gray w-full">
                     <thead >
-                        <tr >
+                        <tr>
                             <th className="p-1"></th>
-                            <th>ASCII 0</th>
-                            <th>ASCII 1</th>
+                                {
+                                    afdTable[0]?.map((element, index) => {
+                                        return(
+                                            <th className="p-2">
+                                                {index}
+                                            </th>
+                                        );
+                                    })
+                                }
                         </tr>
-                        <tr >
+                        <tr>
                             <th className="p-1">State</th>
-                            <th>ASCII 0 char</th>
-                            <th>ASCII 1 char</th>
+                            {
+                                afdTable[0]?.map((element, index) => {
+                                    return(
+                                        <th className="p-2">
+                                            {String.fromCharCode(index)}
+                                        </th>
+                                    );
+                                })
+                            }
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-middle">
@@ -57,16 +71,26 @@ function ViewAFDTable (props){
                                 </tr>
                             )
                         })*/}
-                        <tr >
-                            <td className="p-1">state Index 0</td>
-                            <td className="p-1">-1</td>
-                            <td className="p-1">1</td>
-                        </tr>
-                        <tr >
-                            <td className="p-1">stateIndex 1</td>
-                            <td className="p-1">-1</td>
-                            <td className="p-1">-1</td>
-                        </tr>
+                        {
+                            afdTable?.map((element, index) => {
+                                return(
+                                    <tr>
+                                        <td className="p-2">
+                                            {index}
+                                        </td>
+                                        {
+                                            element?.map((element, index) => {
+                                                return(
+                                                    <td className="p-2">
+                                                        {element}
+                                                    </td>
+                                                );
+                                            })
+                                        }
+                                    </tr>
+                                );
+                            })
+                        }
                     </tbody>
                 </table>
             </div>
