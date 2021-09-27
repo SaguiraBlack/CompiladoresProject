@@ -49,8 +49,16 @@ function getAFDTable(afd) {
 		table[state.id] = Array(257).fill(-1);
 		if (state.accept) table[state.id][256] = state.token;
 		state.transitions.forEach(transition => {
-			const ascii = transition.symbol.charCodeAt(0);
-			table[state.id][ascii] = transition.state.id;
+			if (transition.min!==null) {
+				const min = transition.min.charCodeAt(0);
+				const max = transition.max.charCodeAt(0);
+				for (let i = min; i <= max; i++) {
+					table[state.id][i] = transition.state.id;						
+				}
+			} else {
+				const ascii = transition.symbol.charCodeAt(0);
+				table[state.id][ascii] = transition.state.id;						
+			}
 		});		
 	});
 

@@ -11,7 +11,7 @@ function Basic(props){
         props.pushAFN(validName(), afn1);
     }
 
-    const validName=()=>name===''?'AFN Básico':name;
+    const validName=()=>name===''?'AFN Básico '+symbol:name;
     const validSymbol=()=>symbol===''?'a':symbol;
     return(
         <div className="text-center mt-6 mx-36">
