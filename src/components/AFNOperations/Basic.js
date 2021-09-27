@@ -25,7 +25,7 @@ function Basic(props){
                     </input>
                 </article>
                 <article className="m-auto mb-0 mr-0">
-                    <input type="text" placeholder="Símbolo" className="ring-1 ring-gray-middle m-auto p-1 rounded" maxLength="1"
+                    <input type="text" placeholder="Símbolo" className="ring-1 ring-gray-middle m-auto p-1 rounded" maxLength="3"
                             onChange={e => setSymbol(e.target.value)} >
                     </input>
                 </article>
