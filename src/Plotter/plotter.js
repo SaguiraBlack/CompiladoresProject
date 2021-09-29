@@ -7,18 +7,20 @@ var style=[ // the stylesheet for the graph
 			{
 			selector: 'node',
 			style: {
-				'background-color': '#444',
-				'color':'#fff',
+				'background-color': '#F2F2F2',
+				'color':'#222222',
 				'label': 'data(id)',
-				'text-valign':'center'
+				'text-valign':'center',
+				"border-color": '#BBBBBB',
+				"border-width": '1'
 			}
 			},
 			{
 			selector: 'edge',
 			style: {
 				'width': 1,
-				'line-color': '#ccc',
-				'target-arrow-color': '#ccc',
+				'line-color': '#BBBBBB',
+				'target-arrow-color': '#BBBBBB',
 				'target-arrow-shape': 'triangle',
 				'curve-style': 'bezier'
 			}
@@ -33,13 +35,13 @@ var style=[ // the stylesheet for the graph
 			{
 			selector: ".symbol",
 			style: {
-				"color": '#1169A3'
+				"color": '#222222'
 			}
 			},
 			{
 			selector: ".accept",
 			style: {
-				"border-color": '#f00',
+				"border-color": '#1169A3',
 				"border-width": '3'
 			}
 			},
