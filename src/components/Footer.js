@@ -1,15 +1,19 @@
 import React from "react";
+import { Icon } from '@iconify/react';
 
 class Footer extends React.Component {
     render() {
         return (
             <footer className="bg-gray fixed bottom-0 w-full flex
-                               px-8 py-2 text-white font-semibold">
+                               px-8 py-2 text-white">
                 <div className="absolute inset-y-0 flex">
-                    <span className="m-auto text-xl">Github</span>
+                    <div className="m-auto pr-3">
+                       <Icon icon="akar-icons:github-fill" width="20" /> 
+                    </div>
+                    <span className="m-auto text-sm font-semibold">GitHub</span>
                 </div> 
-                <div className="m-auto text-lg">
-                    <h1>Copyright</h1>
+                <div className="m-auto text-sm">
+                    <h1>Developed by: Alan Palacios & Josefina Tovar. 2021</h1>
                 </div>
             </footer>
         );
