@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AFNConverter from "../../../AFN/AFNConverter";
-import OptionalImg from '../../../img/optional.png';
+import AFNtoAFDImg from '../../../img/afn-to-afd.png';
 
 function AFNtoAFD (props){
     const [name, setName] = useState('');
@@ -38,7 +38,7 @@ function AFNtoAFD (props){
                 </article>
             </section>
             <div className="w-auto h-auto grid justify-items-center p-10">
-                <img src={OptionalImg} alt='Basic'></img>
+                <img src={AFNtoAFDImg} alt='AFN to AFD'></img>
             </div>
             <div>
                 <button className="bg-white text-blue ring-blue ring-1 font-semibold rounded-md p-1 w-1/4 m-3 hover:bg-gray hover:text-white hover:shadow-lg">
