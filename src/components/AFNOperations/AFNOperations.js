@@ -11,6 +11,8 @@ import InputFile from '../InputFile';
 function AFNOperations (){
   const [myAFNs, setMyAFNs] = useState([]);
   const [previewIndex, setPreviewIndex] = useState(-1);
+  const [selectedGraph, setSelectedGraph] = useState(false);
+
   let { path, url } = useRouteMatch();
 
   useEffect(()=>{
@@ -30,6 +32,12 @@ function AFNOperations (){
     pushAFN('AFD Digitos', afd2);
 
   }, []);
+
+  function viewGraph(id) {
+    setSelectedGraph(!selectedGraph);
+    /*setPreviewIndex(-1);
+    history.push(`${path}/ViewGraph`);*/
+  }
 
   function pushAFN(name, afn) {
     setMyAFNs( arr=>[...arr, {name, afn}]);
@@ -71,18 +79,20 @@ function AFNOperations (){
 
   return (
     <div className="flex pt-16 h-screen">
-      <AFNPreview myAFNs={myAFNs} previewIndex={previewIndex} />
+      <AFNPreview myAFNs={myAFNs} previewIndex={previewIndex} selectedGraph={selectedGraph}/>
       <AFNListOperations url={url}/>
       <div className="bg-white w-3/5">
         <h1 className="text-gray text-center font-bold text-4xl p-6">
           Creador de AFN's
         </h1>
-        <Routes PATH={path} pushAFN={pushAFN} myAFNs={myAFNs} />
+        <Routes PATH={path} pushAFN={pushAFN} myAFNs={myAFNs} selectedGraph={selectedGraph} />
       </div>
       <div className="flex-col w-1/5 h-full bg-gray-light">
         <InputFile label="Importar" fileChangeHandler={importSettings}/>
-        <AFNList myAFNs={myAFNs} removeAFN={removeAFN} setPreviewIndex={(i)=>setPreviewIndex(i)} previewIndex={previewIndex} AFDList={false} exportFile={exportFile}/>
-        <AFNList myAFNs={myAFNs} removeAFN={removeAFN} setPreviewIndex={(i)=>setPreviewIndex(i)} previewIndex={previewIndex} AFDList={true} exportFile={exportFile}/>
+        <AFNList myAFNs={myAFNs} removeAFN={removeAFN} setPreviewIndex={(i)=>setPreviewIndex(i)} viewGraph={viewGraph}
+                  previewIndex={previewIndex} AFDList={false} exportFile={exportFile} url={url}/>
+        <AFNList myAFNs={myAFNs} removeAFN={removeAFN} setPreviewIndex={(i)=>setPreviewIndex(i)} viewGraph={viewGraph}
+                  previewIndex={previewIndex} AFDList={true} exportFile={exportFile} url={url}/>
       </div>
     </div>
   )

@@ -4,7 +4,7 @@ function AFNListItem (props){
 
   function onHover(){
     if (props.id!==props.previewIndex) {
-      props.setPreviewIndex(props.id)
+      props.setPreviewIndex(props.id);
     }
   }
 
@@ -33,7 +33,8 @@ function AFNListItem (props){
   return (
     <div className="w-full hover:bg-gray-middle p-3 pl-8 relative font-normal border-t-2 border-gray-middle flex AFNListItem" 
           onMouseOver={()=>onHover()} 
-          onMouseOut={(e)=>onMouseOut(e)}>
+          onMouseOut={(e)=>onMouseOut(e)}
+          onClick={()=>props.viewGraph(props.id)}>
       <label className="w-full m-auto AFNListItem">{props.name}</label>
       <div className="flex AFNListItem">
         <Icon icon="carbon:overflow-menu-vertical" width="25" className="m-auto AFNListItem" 

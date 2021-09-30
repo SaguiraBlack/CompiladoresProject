@@ -11,6 +11,7 @@ import ClosureStar from "./ClosureStar";
 import Concat from "./Concat";
 import Join from "./Join";
 import Optional from "./Optional";
+import ViewGraph from "./ViewGraph";
 
 const Routes = (props) => (
     <Switch>
@@ -49,6 +50,9 @@ const Routes = (props) => (
       </Route>
       <Route path={`${props.PATH}/ViewAFDTable`} >
         <ViewAFDTable {...props} />
+      </Route>
+      <Route path={`${props.PATH}/ViewGraph`} >
+        <ViewGraph {...props} />
       </Route>
     </Switch>
 );

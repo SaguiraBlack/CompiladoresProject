@@ -81,5 +81,8 @@ function init(elements, containerId) {
 function renderAFN(afn, containerId) {
 	init(afn.getNodesAndEdges(), containerId);
 }
-const Plotter={init, renderAFN}
+function reinit() {
+	cy=null;
+}
+const Plotter={init, renderAFN, reinit}
 export default Plotter;
