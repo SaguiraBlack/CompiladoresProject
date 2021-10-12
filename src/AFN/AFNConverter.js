@@ -102,7 +102,7 @@ function convertRegexToAFN(expression) {
 	let AFN;
 
 	for (let i = 0; i < postFix.length; i++) {
-		const char = postFix[i];
+		let char = postFix[i];
 		switch (char) {
 			case '.':
 				afnA = AFNStack.pop();				
@@ -131,7 +131,18 @@ function convertRegexToAFN(expression) {
 				AFN = AFNFactory.optional(afnA);
 				AFNStack.push(AFN);
 				break;
+			case '\\':
+				i++;
+				char = postFix[i];
+				AFN = AFNFactory.createBasicAFN(char);
+				AFNStack.push(AFN);
+				break;
 			default:
+				//read x-y symbols
+				if(postFix[i+1] && postFix[i+1]==='-'){
+					char+='-'+postFix[i+2];
+					i+=2;
+				}
 				AFN = AFNFactory.createBasicAFN(char);
 				AFNStack.push(AFN);
 				break;
