@@ -21,7 +21,7 @@ function Index (){
                             </article>
                         </section>
                     </Link>
-                    <Link to="/analisisSintactico">
+                    <Link to="/SintacticAnalizer">
                         <section id="projects" className="flex">
                             <article className="m-auto">
                                 <div className="bg-gray-light m-auto w-60 h-32 rounded-t-lg"/>

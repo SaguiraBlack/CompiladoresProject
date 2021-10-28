@@ -3,7 +3,7 @@ import React, { useState} from 'react';
 import AllAFN from '../AllAFN';
 import Button from '../Button';
 
-function AnalisisSintactico (){
+function SintacticAnalizer (){
   const [grammar, setGrammar] = useState(`E:T,Ep\nEp:mas,T,Ep|menos,T,Ep|epsilon`)
   function analize() {
     const rules = grammar.split('\n');
@@ -28,4 +28,4 @@ function AnalisisSintactico (){
   )
 }
 
-export default AnalisisSintactico;
+export default SintacticAnalizer;

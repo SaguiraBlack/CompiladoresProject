@@ -42,7 +42,7 @@ function ViewAFDTable (props){
                                 {
                                     afdTable[0]?.map((element, index) => {
                                         return(
-                                            <th className="p-2">
+                                            <th className="p-2" key={index}>
                                                 {index}
                                             </th>
                                         );
@@ -54,7 +54,7 @@ function ViewAFDTable (props){
                             {
                                 afdTable[0]?.map((element, index) => {
                                     return(
-                                        <th className="p-2">
+                                        <th className="p-2" key={index}>
                                             {String.fromCharCode(index)}
                                         </th>
                                     );
@@ -74,14 +74,14 @@ function ViewAFDTable (props){
                         {
                             afdTable?.map((element, index) => {
                                 return(
-                                    <tr>
+                                    <tr key={index}>
                                         <td className="p-2">
                                             {index}
                                         </td>
                                         {
                                             element?.map((element, index) => {
                                                 return(
-                                                    <td className="p-2">
+                                                    <td className="p-2" key={index}>
                                                         {element}
                                                     </td>
                                                 );
