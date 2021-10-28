@@ -3,24 +3,35 @@ import {Link} from 'react-router-dom';
 import PalaciosLugo from '../img/palacios.jpg';
 import TovarEspejo from '../img/tovar.jpg';
 
-class Index extends React.Component {
-    render() {
+function Index (){
         return (
             <div className="bg-white h-screen text-center">
                 <section id="title" className="p-6">
                     <h1 className="text-gray text-4xl font-bold p-1">Compiladores</h1>
                     <h2 className="text-gray text-2xl font-medium p-1">3CM16</h2>
                 </section>
-                <Link to="/Operations">
-                    <section id="projects" className="flex">
-                        <article className="m-auto">
-                            <div className="bg-gray-light m-auto w-60 h-32 rounded-t-lg"/>
-                            <div className="bg-blue text-white font-semibold p-1">
-                                Proyecto 1
-                            </div>
-                        </article>
-                    </section>
-                </Link>
+                <div >
+                    <Link to="/Operations">
+                        <section id="projects" className="flex">
+                            <article className="m-auto">
+                                <div className="bg-gray-light m-auto w-60 h-32 rounded-t-lg"/>
+                                <div className="bg-blue text-white font-semibold p-1">
+                                    Proyecto 1
+                                </div>
+                            </article>
+                        </section>
+                    </Link>
+                    <Link to="/analisisSintactico">
+                        <section id="projects" className="flex">
+                            <article className="m-auto">
+                                <div className="bg-gray-light m-auto w-60 h-32 rounded-t-lg"/>
+                                <div className="bg-blue text-white font-semibold p-1">
+                                    Analizador Sintactico
+                                </div>
+                            </article>
+                        </section>
+                    </Link>
+                </div>
                 <section id="students" className="flex pt-10">
                     <article className="m-auto mr-5">
                         <div className="bg-gray-light w-40 h-40 rounded-full overflow-hidden m-auto">
@@ -41,7 +52,6 @@ class Index extends React.Component {
                 </section>
             </div>
         );
-    }
 }
 
 export default Index;

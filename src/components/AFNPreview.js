@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import AFNFactory from "../AFN/AFNFactory";
 import Plotter from "../Plotter/plotter";
 
-function AFNPreview (props){
+function AFNPreview(props){
 	const [name, setName] = useState('');
 
 	useEffect(()=>Plotter.reinit(), []);
