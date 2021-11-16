@@ -1,13 +1,20 @@
 import React, { useState} from 'react';
+import GrammarFactory from '../../Gramatica/GrammarFactory';
 
 import AllAFN from '../AllAFN';
 import Button from '../Button';
 
 function SintacticAnalizer (){
-  const [grammar, setGrammar] = useState(`E:T,Ep\nEp:mas,T,Ep|menos,T,Ep|epsilon`)
+  const [grammar, setGrammar] = useState(
+`E -> E+T | E-T | T
+T -> T*F | T/F | F
+F -> (E) | num`)
+
   function analize() {
-    const rules = grammar.split('\n');
-    console.log(rules);
+    const augmentedGrammar = GrammarFactory.createGrammar(grammar);
+    const lockItems = augmentedGrammar.lock({state: "E'", word: 'E' })
+    console.log(augmentedGrammar);
+    console.log(lockItems);
   }
 
   return (
