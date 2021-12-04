@@ -138,9 +138,9 @@ function convertRegexToAFN(expression) {
 				AFNStack.push(AFN);
 				break;
 			default:
-				//read x-y symbols
-				if(postFix[i+1] && postFix[i+1]==='-'){
-					char+='-'+postFix[i+2];
+				//read x_y symbols
+				if(postFix[i+1] && postFix[i+1]==='_'){
+					char+='_'+postFix[i+2];
 					i+=2;
 				}
 				AFN = AFNFactory.createBasicAFN(char);

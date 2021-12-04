@@ -38,8 +38,8 @@ Array.prototype.peek = function () {
 
 function addConcatOp(expression) {
   let stack = [];
-  const invalidCharToConcat = ['+','*','?','|',')', '-']
-  const invalidCurrentChar = ['(','|', '-']
+  const invalidCharToConcat = ['+','*','?','|',')', '_']
+  const invalidCurrentChar = ['(','|', '_']
   for (let i = 0; i < expression.length; i++) {
     const char = expression[i];
     let nextChar = expression[i+1];
