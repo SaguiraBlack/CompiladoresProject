@@ -1,4 +1,6 @@
 import React, { useState} from 'react';
+import AFNConverter from '../../AFN/AFNConverter';
+import LexicalAnalizer from '../../AFN/LexicalAnalizer';
 import useAFNs from '../../context/useAFNs';
 import GrammarFactory from '../../Gramatica/GrammarFactory';
 
@@ -7,15 +9,28 @@ import Button from '../Button';
 
 function SintacticAnalizer (){
   const [afdTable, setAfdTable] = useState([]);
-  const [sigma, setSigma] = useState('');
+  const [sigma, setSigma] = useState('2.54*(12-78)/(13+17)');
   const [myAFNs, setMyAFNs] = useAFNs();
   const [grammar, setGrammar] = useState(
 `E->E + T|E - T|T
 T->T * F|T / F|F
 F->( E )|num`)
   const items = [{state: "E", word: 'E.+T' }, {state: "E", word: 'E.-T' }, {state: "E", word: '.T' }]
+  //Select AFD
   const [afd, setAfd] = useState(-1);
+  //Grammar
   const [augmentedGrammar, setAugmentedGrammar] = useState(null)
+
+  //Probar Lexico
+  const [lexTable, setLexTable] = useState([]);
+
+  function analyzeString() {
+      if(afd<0) return;
+      const AFD = myAFNs[afd].afn;
+      console.log(AFD);
+      const afdTable = AFNConverter.getAFDTable(AFD);
+      setLexTable(LexicalAnalizer.analizeString(afdTable, sigma));
+  }      
 
   function updateAFD(i) {
       setAfd(i);
@@ -55,26 +70,22 @@ F->( E )|num`)
           </div>
 
           <div className="w-1/5 flex-col pl-6">
-            <div>
               <h2 className="text-gray font-bold text-xl">
-                Seleccionar AFD
+                No Terminales
               </h2>
-              <label htmlFor="AFN1" className="text-gray-middle">AFD:</label>
-              <select name="AFN1" className="ring-1 ring-gray-middle m-auto p-1 rounded my-1 w-full"
-                      onChange={e => updateAFD(e.target.value)}>
-                      <option value={-1} key={-1}>Selecciona un AFD</option>
-                          {myAFNs.map((element, i)=>{
-                              if(element.afn.isAFD){
-                                  return(
-                                      <option value={i} key={i}>{element.name}</option>
-                                  )
-                              }else return '';
-                          })}
-              </select>
-            </div>
-            <div>
               <div className="flex flex-col" >
+                {augmentedGrammar && augmentedGrammar.noTerminals?.map((symbol, i)=>{
+                  return (
+                    <div key={i}>
+                      <span >{symbol}</span>
+                    </div>
+                  )
+                })}
+              </div>
+              <h2 className="text-gray font-bold text-xl">
                 Terminales
+              </h2>
+              <div className="flex flex-col" >
                 {augmentedGrammar && augmentedGrammar.terminalsStructure?.map((object, i)=>{
                   return (
                     <div key={i}>
@@ -89,7 +100,6 @@ F->( E )|num`)
               <div className="items-end text-right">
                 <Button label="Asignar tokens"/>
               </div>
-            </div>
           </div>
 
           <div className="w-2/5 flex-col pl-6">
@@ -110,6 +120,23 @@ F->( E )|num`)
             <h2 className="text-gray font-bold text-2xl p-6">
               Analizar Sintácticamente sigma
             </h2>
+            <div>
+              <h2 className="text-gray font-bold text-xl">
+                Seleccionar AFD
+              </h2>
+              <label htmlFor="AFN1" className="text-gray-middle">AFD:</label>
+              <select name="AFN1" className="ring-1 ring-gray-middle m-auto p-1 rounded my-1 w-full"
+                      onChange={e => updateAFD(e.target.value)}>
+                      <option value={-1} key={-1}>Selecciona un AFD</option>
+                          {myAFNs.map((element, i)=>{
+                              if(element.afn.isAFD){
+                                  return(
+                                      <option value={i} key={i}>{element.name}</option>
+                                  )
+                              }else return '';
+                          })}
+              </select>
+            </div>
             <article className="m-auto mb-0 ml-0">
               Sigma
                 <input type="text" placeholder="SIGMA" className="ring-1 ring-gray-middle m-auto p-1 rounded" 
@@ -117,23 +144,31 @@ F->( E )|num`)
                 </input>
             </article>
             <article>
-              <Button label="Probar Léxico" />
-            <div className="w-auto h-auto grid justify-items-center p-10 overflow-x-scroll">
-              <table className="divide-y divide-gray w-full">
-                  <thead >
-                      <tr>
-                          <th className="p-1">Lexema</th>
-                          <th className="p-1">Token</th>
-                      </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-middle">
-                  </tbody>
-              </table>
+            <Button label="Probar Léxico" onClick={analyzeString} />
+            <div className="w-auto h-auto grid justify-items-center p-10">
+                <table className="divide-y divide-gray w-full">
+                    <thead >
+                        <tr >
+                            <th className="p-1">Lexema</th>
+                            <th>Token</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-middle">
+                        {lexTable.map((obj, i)=>{
+                            return(
+                                <tr key={i}>
+                                    <td className="p-1">{obj[1]}</td>
+                                    <td className="p-1">{obj[0]}</td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </table>
             </div>
 
             </article>
             <div className="w-auto h-auto grid justify-items-center p-10 overflow-x-scroll">
-              <Button label="Analizar sigma" />
+              <Button label="Analizar sintácticamente" />
               <table className="divide-y divide-gray w-full">
                   <thead >
                       <tr>
