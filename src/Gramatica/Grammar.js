@@ -1,9 +1,10 @@
 export default class Grammar{
-	constructor(terminals, noTerminals, initial, rules){
+	constructor(terminals, noTerminals, initial, rules, terminalsStructure){
 		this.terminals=terminals; //array of terminal symbols
 		this.noTerminals=noTerminals;// array of symbols that aren´t terminal
 		this.initial = initial; // initial symbol
 		this.rules = rules; // dictionary of rules
+		this.terminalsStructure = terminalsStructure; // array of terminals objects with symbol and respective token
 	}
 
 	lock(originalItems){

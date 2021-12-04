@@ -7,35 +7,33 @@ import Button from '../Button';
 
 function SintacticAnalizer (){
   const [afdTable, setAfdTable] = useState([]);
-  const [tokens, setTokens] = useState([]);
   const [sigma, setSigma] = useState('');
   const [myAFNs, setMyAFNs] = useAFNs();
   const [grammar, setGrammar] = useState(
-`E -> E+T | E-T | T
-T -> T*F | T/F | F
-F -> (E) | num`)
+`E->E + T|E - T|T
+T->T * F|T / F|F
+F->( E )|num`)
   const items = [{state: "E", word: 'E.+T' }, {state: "E", word: 'E.-T' }, {state: "E", word: '.T' }]
   const [afd, setAfd] = useState(-1);
-
-  function updateTokens() {
-      const AFD = myAFNs[afd].afn;
-      AFD.acceptedStates.forEach(state => {
-          state.token = tokens[state.id];
-      });
-      console.log(AFD);
-  }      
+  const [augmentedGrammar, setAugmentedGrammar] = useState(null)
 
   function updateAFD(i) {
       setAfd(i);
       if (i<0)return;
-      const AFD = myAFNs[i].afn;
-      setTokens(Array(AFD.states.length).fill(0));
   }
   function analize() {
     const augmentedGrammar = GrammarFactory.createGrammar(grammar);
     const goToItems = augmentedGrammar.goTo(items, '-')
     console.log(augmentedGrammar);
     console.log(goToItems);
+    setAugmentedGrammar(augmentedGrammar)
+  }
+
+  function setToken(value, i) {
+    let grammarClone =  {...augmentedGrammar};  
+    grammarClone.terminalsStructure[i].token=parseInt(value)
+    console.log(grammarClone);
+    setAugmentedGrammar(grammarClone)
   }
 
   return (
@@ -48,7 +46,29 @@ F -> (E) | num`)
           <textarea className='bg-gray-middle' rows={10} cols={40} 
                     value={grammar} onChange={e=>setGrammar(e.target.value)} 
                     spellCheck="false"/>
-          <Button label="Analizar" onClick={analize} />
+          <Button label="Crear" onClick={analize} />
+          <div className="flex flex-row space-x-10 justify-center">
+            <div className="flex flex-col" >
+              No Terminales
+              {augmentedGrammar && augmentedGrammar.noTerminals?.map((symbol, i)=>{
+                return <span key={i}>{symbol}</span>
+              })}
+            </div>
+            <div className="flex flex-col" >
+              Terminales
+              {augmentedGrammar && augmentedGrammar.terminalsStructure?.map((object, i)=>{
+                return (
+                  <div key={i}>
+                    <span >{object.symbol}</span>
+                    <input type="text" placeholder="token" className="ring-1 ring-gray-middle m-auto p-1 rounded w-32 mx-5" 
+                            onChange={e => setToken(e.target.value, i)} value={object.token}>
+                    </input>
+                  </div>
+                )
+              })}
+            </div>
+            <Button label="Asignar tokens" />
+          </div>
         </div>
         <article className="m-auto mb-0 mr-0 w-1/2 text-left">
             <h2 className="text-gray font-bold text-2xl p-6">
