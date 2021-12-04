@@ -41,9 +41,7 @@ function createGrammar(expression){
 	return grammar;
 }
 
-function findItemsGroups(grammar) {
-  
-}
+
 
 function getGraphFormatFromItems(itemsGroup) {
   
