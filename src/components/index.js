@@ -10,7 +10,7 @@ function Index (){
                     <h1 className="text-gray text-4xl font-bold p-1">Compiladores</h1>
                     <h2 className="text-gray text-2xl font-medium p-1">3CM16</h2>
                 </section>
-                <div >
+                <div className="flex flex-row justify-center items-center space-x-10" >
                     <Link to="/Operations">
                         <section id="projects" className="flex">
                             <article className="m-auto">

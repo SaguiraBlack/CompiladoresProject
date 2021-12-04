@@ -6,9 +6,13 @@ export default class Grammar{
 		this.rules = rules; // dictionary of rules
 	}
 
-	lock(originalItem){
-		let lockItems = [originalItem];
-		let stack = [originalItem.word.charAt(0)];
+	lock(originalItems){
+		let lockItems = [...originalItems];
+		let stack = [];
+		originalItems.forEach(item => {
+			const symbolIndex =item.word.indexOf('.')+1;
+			stack.push(item.word.charAt(symbolIndex))	
+		});
 		let toVisit = [];
 
 		while (stack.length>0) {
@@ -21,7 +25,10 @@ export default class Grammar{
 						state: rule.state ,
 						word: transition 
 					}
-					lockItems.push(newItem);
+					lockItems.push({
+						state: newItem.state,
+						word: '.'+newItem.word
+					});
 					if (toVisit.indexOf(newItem.word.charAt(0))===-1) {
 						stack.push(newItem.word.charAt(0));
 					}
@@ -30,6 +37,26 @@ export default class Grammar{
 			}
 		}
 
+		return lockItems;
+	}
+
+	move(items, symbol){
+		let moveItems = [];
+		items.forEach(item => {
+			const symbolIndex =item.word.indexOf('.')+1;
+			if(item.word.charAt(symbolIndex)===symbol){
+				let newWord = item.word.replace('.','');
+				newWord = newWord.slice(0,symbolIndex)+'.'+newWord.slice(symbolIndex);
+				moveItems.push({state:item.state, word:newWord});
+			}
+		});
+		return moveItems;
+	}
+
+	goTo(items, symbol){
+		const moveItems = this.move(items, symbol)
+		console.log(moveItems);
+		const lockItems = this.lock(moveItems)
 		return lockItems;
 	}
 }

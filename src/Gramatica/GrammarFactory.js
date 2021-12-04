@@ -11,10 +11,26 @@ function createGrammar(expression){
     });
 	const rulesGrammar = [{
         state: rules[0].state+"'",
-        transitions: [rules[0].state+"'"]
+        transitions: [rules[0].state+""]
 	}, ...rules]
-	let grammar = new Grammar(null, null, rulesGrammar[0].state, rulesGrammar);
+  const noTerminals = rulesGrammar.map((rule)=>rule.state);
+  const terminals = [];
+  rulesGrammar.forEach(rule => {
+    rule.transitions.forEach(transition => {
+      
+    });
+  });
+
+	let grammar = new Grammar(terminals, noTerminals, rulesGrammar[0].state, rulesGrammar);
 	return grammar;
+}
+
+function findItemsGroups(grammar) {
+  
+}
+
+function getGraphFormatFromItems(itemsGroup) {
+  
 }
 const GrammarFactory = {createGrammar};
 export default GrammarFactory;
