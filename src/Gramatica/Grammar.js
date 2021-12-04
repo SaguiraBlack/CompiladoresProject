@@ -56,7 +56,7 @@ export default class Grammar{
 
 	goTo(items, symbol){
 		const moveItems = this.move(items, symbol)
-		console.log(moveItems);
+		//console.log(moveItems);
 		const lockItems = this.lock(moveItems)
 		return lockItems;
 	}

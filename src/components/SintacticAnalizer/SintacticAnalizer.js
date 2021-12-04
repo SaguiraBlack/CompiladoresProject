@@ -15,7 +15,6 @@ function SintacticAnalizer (){
 `E->E + T|E - T|T
 T->T * F|T / F|F
 F->( E )|num`)
-  const items = [{state: "E", word: 'E.+T' }, {state: "E", word: 'E.-T' }, {state: "E", word: '.T' }]
   //Select AFD
   const [afd, setAfd] = useState(-1);
   //Grammar
@@ -37,11 +36,12 @@ F->( E )|num`)
       if (i<0)return;
   }
   function analize() {
+    const items = [{state: "E", word: 'E.+T' }, {state: "E", word: 'E.-T' }, {state: "E", word: '.T' }]
     const augmentedGrammar = GrammarFactory.createGrammar(grammar);
     const goToItems = augmentedGrammar.goTo(items, '-')
     console.log(augmentedGrammar);
-    console.log(goToItems);
     setAugmentedGrammar(augmentedGrammar)
+    console.log(GrammarFactory.getLRTable(augmentedGrammar));
   }
 
   function setToken(value, i) {
@@ -54,7 +54,7 @@ F->( E )|num`)
     <div className="flex pt-16 h-screen">
       <div className="bg-white w-4/5">
         <h1 className="text-gray font-bold text-4xl p-6 text-center">
-          Análisis LL(1)
+          Análisis LR(1)
         </h1>
 
         <div className='flex'>
@@ -107,11 +107,34 @@ F->( E )|num`)
               Crear Tabla
             </h2>
             <div>
-              Tabla LL(1)
+              Tabla LR(1)
             </div>
             <div className="items-end text-right">
               <Button label="Crear Tabla" onClick={analize}/>
             </div>   
+            <div className="w-auto h-auto grid justify-items-center p-10">
+                <table className="divide-y divide-gray w-full">
+                    <thead >
+                        <tr >
+                            <th className="p-1">No Terminal</th>
+                            {augmentedGrammar && augmentedGrammar.terminals.map((symb, i)=>{
+                              return <th key={i}>{symb}</th>
+                            })}
+
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-middle">
+                        {lexTable.map((obj, i)=>{
+                            return(
+                                <tr key={i}>
+                                    <td className="p-1">{obj[1]}</td>
+                                    <td className="p-1">{obj[0]}</td>
+                                </tr>
+                            )
+                        })}
+                    </tbody>
+                </table>
+            </div>
           </div>
         </div>
           

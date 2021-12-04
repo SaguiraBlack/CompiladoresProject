@@ -152,7 +152,7 @@ function convertRegexToAFN(expression) {
 }
 
 class StateT{
-	constructor(states=[], accept=false, id=-1, token=0){
+	constructor(states=[], accept=false, id=-1, token=id*10){
 		this.id=id;//int index
 		this.accept=accept;//boolean
 		this.states=states;//array of transition object
