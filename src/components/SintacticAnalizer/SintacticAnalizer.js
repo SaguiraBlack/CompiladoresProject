@@ -82,10 +82,11 @@ F->( E )|num`)
                   )
                 })}
               </div>
-              <h2 className="text-gray font-bold text-xl">
-                Terminales
-              </h2>
-              <div className="flex flex-col" >
+              
+              <div className="flex flex-col overflow-y-scroll">
+                <h2 className="text-gray font-bold text-xl">
+                  Terminales
+                </h2>
                 {augmentedGrammar && augmentedGrammar.terminalsStructure?.map((object, i)=>{
                   return (
                     <div key={i}>
@@ -137,14 +138,17 @@ F->( E )|num`)
             </div>
           </div>
         </div>
-          
-        
-        <div>
-            <h2 className="text-gray font-bold text-2xl p-6">
-              Analizar Sintácticamente sigma
-            </h2>
+
+
+        <div className="flex">
+          <div className="ml-10 w-2/6 flex-col">
             <div>
-              <h2 className="text-gray font-bold text-xl">
+              <h2 className="text-gray font-bold text-2xl my-5">
+                Analizar Sintácticamente sigma
+              </h2>
+            </div>
+            <div>
+              <h2 className="text-gray font-bold text-xl py-2">
                 Seleccionar AFD
               </h2>
               <label htmlFor="AFN1" className="text-gray-middle">AFD:</label>
@@ -159,39 +163,38 @@ F->( E )|num`)
                               }else return '';
                           })}
               </select>
+              <article className="m-auto mb-0 ml-0 py-3">
+                Sigma<br/>
+                  <input type="text" placeholder="SIGMA" className="ring-1 ring-gray-middle m-auto p-1 rounded" 
+                          onChange={e => setSigma(e.target.value)} value={sigma}>
+                  </input>
+              </article>
+              <Button label="Probar Léxico" onClick={analyzeString} />
             </div>
-            <article className="m-auto mb-0 ml-0">
-              Sigma
-                <input type="text" placeholder="SIGMA" className="ring-1 ring-gray-middle m-auto p-1 rounded" 
-                        onChange={e => setSigma(e.target.value)} value={sigma}>
-                </input>
-            </article>
-            <article>
-            <Button label="Probar Léxico" onClick={analyzeString} />
-            <div className="w-auto h-auto grid justify-items-center p-10">
-                <table className="divide-y divide-gray w-full">
-                    <thead >
-                        <tr >
-                            <th className="p-1">Lexema</th>
-                            <th>Token</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-middle">
-                        {lexTable.map((obj, i)=>{
-                            return(
-                                <tr key={i}>
-                                    <td className="p-1">{obj[1]}</td>
-                                    <td className="p-1">{obj[0]}</td>
-                                </tr>
-                            )
-                        })}
-                    </tbody>
-                </table>
-            </div>
+          </div>
 
-            </article>
-            <div className="w-auto h-auto grid justify-items-center p-10 overflow-x-scroll">
-              <Button label="Analizar sintácticamente" />
+          <div className="w-1/6 h-auto grid justify-items-center p-10">
+            <table className="divide-y divide-gray w-full">
+                <thead >
+                    <tr >
+                        <th className="p-5">Lexema</th>
+                        <th>Token</th>
+                    </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-middle">
+                    {lexTable.map((obj, i)=>{
+                        return(
+                            <tr key={i}>
+                                <td className="p-1">{obj[1]}</td>
+                                <td className="p-1">{obj[0]}</td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
+          </div>
+          <div className="w-4/6 h-auto grid justify-items-center overflow-x-scroll">
+              <Button label="Analizar sintácticamente"/>
               <table className="divide-y divide-gray w-full">
                   <thead >
                       <tr>
@@ -233,9 +236,9 @@ F->( E )|num`)
                   </tbody>
               </table>
             </div>
-        </div>
+        </div>  
       </div>
-      <AllAFN />
+      <AllAFN/>
     </div>
   )
 }
