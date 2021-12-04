@@ -49,10 +49,18 @@ function getGraphFormatFromItems(itemsGroup) {
   
 }
 
-function analizeSingleState(grammar, state) {
-  console.log(state);
-  // check for no terminals coincidences
-  grammar.noTerminals.forEach(symbol => {
+function AreEqualStates(stateA, stateB) {
+  if(stateA.length!==stateB.length) return false;
+  stateA.forEach((element,i) => {
+    if (element.state!==stateB[i].state ||
+        element.word!==stateB[i].word ) {
+          return false;
+    } 
+  });
+  return true;
+}
+
+function analizeForSymbol(symbol, grammar, state, finalStates) {
     console.log(symbol);
     let coincidences = [];
     state.forEach(element => {
@@ -62,36 +70,36 @@ function analizeSingleState(grammar, state) {
     });
     console.log('coincidences: '+coincidences.length);
 		if(coincidences.length>0){
-      console.log(coincidences);
+      //console.log(coincidences);
       const newState = grammar.goTo(coincidences, symbol);
       console.log('new state');
       console.log(newState);
+      finalStates.forEach(element => {
+        if(AreEqualStates(newState, element)){
+          console.log('iguales!!');
+        }
+      });
     }
+}
+function analizeSingleState(grammar, state, finalStates) {
+  console.log(state);
+  // check for no terminals coincidences
+  grammar.noTerminals.forEach(symbol => {
+    analizeForSymbol(symbol, grammar, state, finalStates);
   }); 
 
   // check for terminals coincidences
   grammar.terminals.forEach(symbol => {
-    console.log(symbol);
-    let coincidences = [];
-    state.forEach(element => {
-      if (element.word.indexOf('.')+1 === element.word.indexOf(symbol)){
-        coincidences.push(element)
-      }
-    });
-    console.log('coincidences: '+coincidences.length);
-		if(coincidences.length>0){
-      console.log(coincidences);
-      const newState = grammar.goTo(coincidences, symbol);
-      console.log('new state');
-      console.log(newState);
-    }
+    analizeForSymbol(symbol, grammar, state, finalStates);
   }); 
 }
 
 function getLRTable(grammar) {
   const lock0 = grammar.lock([{state: "E'", word: '.E'}]);
+  let stack = [lock0];
   let states = [lock0];
-  analizeSingleState(grammar, lock0)
+  analizeSingleState(grammar, lock0, states)
+  return states;
 }
 
 const GrammarFactory = {createGrammar, getLRTable};

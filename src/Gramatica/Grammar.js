@@ -44,10 +44,11 @@ export default class Grammar{
 	move(items, symbol){
 		let moveItems = [];
 		items.forEach(item => {
-			const symbolIndex =item.word.indexOf('.')+1;
-			if(item.word.charAt(symbolIndex)===symbol){
+			const symbolEnd = item.word.indexOf(symbol)+symbol.length-1;
+      		if (item.word.indexOf('.')+1 === item.word.indexOf(symbol)){
+				//if(item.word.charAt(symbolIndex)===symbol){
 				let newWord = item.word.replace('.','');
-				newWord = newWord.slice(0,symbolIndex)+'.'+newWord.slice(symbolIndex);
+				newWord = newWord.slice(0,symbolEnd)+'.'+newWord.slice(symbolEnd);
 				moveItems.push({state:item.state, word:newWord});
 			}
 		});
