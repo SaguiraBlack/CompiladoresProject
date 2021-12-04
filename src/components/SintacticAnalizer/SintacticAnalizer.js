@@ -38,65 +38,75 @@ F->( E )|num`)
 
   return (
     <div className="flex pt-16 h-screen">
-      <div className="bg-white w-4/5 text-center ">
-        <h1 className="text-gray font-bold text-4xl p-6">
-          Analizador Sintactico
+      <div className="bg-white w-4/5">
+        <h1 className="text-gray font-bold text-4xl p-6 text-center">
+          Análisis LL(1)
         </h1>
-        <div className='m-auto'>
-          <textarea className='bg-gray-middle' rows={10} cols={40} 
-                    value={grammar} onChange={e=>setGrammar(e.target.value)} 
-                    spellCheck="false"/>
-          <Button label="Crear" onClick={analize} />
-          <div className="flex flex-row space-x-10 justify-center">
-            <div className="flex flex-col" >
-              No Terminales
-              {augmentedGrammar && augmentedGrammar.noTerminals?.map((symbol, i)=>{
-                return <span key={i}>{symbol}</span>
-              })}
-            </div>
-            <div className="flex flex-col" >
-              Terminales
-              {augmentedGrammar && augmentedGrammar.terminalsStructure?.map((object, i)=>{
-                return (
-                  <div key={i}>
-                    <span >{object.symbol}</span>
-                    <input type="text" placeholder="token" className="ring-1 ring-gray-middle m-auto p-1 rounded w-32 mx-5" 
-                            onChange={e => setToken(e.target.value, i)} value={object.token}>
-                    </input>
-                  </div>
-                )
-              })}
-            </div>
-            <Button label="Asignar tokens" />
-          </div>
-        </div>
-        <article className="m-auto mb-0 mr-0 w-1/2 text-left">
-            <h2 className="text-gray font-bold text-2xl p-6">
-              Seleccionar AFD
-            </h2>
-            <label htmlFor="AFN1" className="text-gray-middle">AFD:</label>
-            <select name="AFN1" className="ring-1 ring-gray-middle m-auto p-1 rounded my-1 w-full"
-                    onChange={e => updateAFD(e.target.value)}>
-                    <option value={-1} key={-1}>Selecciona un AFD</option>
-                        {myAFNs.map((element, i)=>{
-                            if(element.afn.isAFD){
-                                return(
-                                    <option value={i} key={i}>{element.name}</option>
-                                )
-                            }else return '';
-                        })}
-            </select>
-        </article>
-        <div>
-            <h2 className="text-gray font-bold text-2xl p-6">
-              Creat Tabla
-            </h2>
-          <Button label="Creat Tabla" onClick={analize} />
-          <span>Tabla LL(1)</span>
-          <div>
 
+        <div className='flex'>
+          <div className='flex-col w-1/4'>
+            <div className="ml-10">
+              <textarea className='bg-gray-light rounded-sm p-5' rows={10} cols={21} 
+                value={grammar} onChange={e=>setGrammar(e.target.value)} 
+                spellCheck="false"/>
+            </div>
+            <div className="items-end text-right">
+              <Button label="Crear" onClick={analize} className=""/>
+            </div>
+          </div>
+
+          <div className="w-1/5 flex-col pl-6">
+            <div>
+              <h2 className="text-gray font-bold text-xl">
+                Seleccionar AFD
+              </h2>
+              <label htmlFor="AFN1" className="text-gray-middle">AFD:</label>
+              <select name="AFN1" className="ring-1 ring-gray-middle m-auto p-1 rounded my-1 w-full"
+                      onChange={e => updateAFD(e.target.value)}>
+                      <option value={-1} key={-1}>Selecciona un AFD</option>
+                          {myAFNs.map((element, i)=>{
+                              if(element.afn.isAFD){
+                                  return(
+                                      <option value={i} key={i}>{element.name}</option>
+                                  )
+                              }else return '';
+                          })}
+              </select>
+            </div>
+            <div>
+              <div className="flex flex-col" >
+                Terminales
+                {augmentedGrammar && augmentedGrammar.terminalsStructure?.map((object, i)=>{
+                  return (
+                    <div key={i}>
+                      <span >{object.symbol}</span>
+                      <input type="text" placeholder="token" className="ring-1 ring-gray-middle m-auto p-1 rounded w-32 mx-5" 
+                              onChange={e => setToken(e.target.value, i)} value={object.token}>
+                      </input>
+                    </div>
+                  )
+                })}
+              </div>
+              <div className="items-end text-right">
+                <Button label="Asignar tokens"/>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-2/5 flex-col pl-6">
+            <h2 className="text-gray font-bold text-xl">
+              Crear Tabla
+            </h2>
+            <div>
+              Tabla LL(1)
+            </div>
+            <div className="items-end text-right">
+              <Button label="Crear Tabla" onClick={analize}/>
+            </div>   
           </div>
         </div>
+          
+        
         <div>
             <h2 className="text-gray font-bold text-2xl p-6">
               Analizar Sintácticamente sigma
