@@ -32,7 +32,6 @@ F->( E )|num`)
   function setToken(value, i) {
     let grammarClone =  {...augmentedGrammar};  
     grammarClone.terminalsStructure[i].token=parseInt(value)
-    console.log(grammarClone);
     setAugmentedGrammar(grammarClone)
   }
 
