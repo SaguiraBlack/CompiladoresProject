@@ -8,9 +8,9 @@ import AllAFN from '../AllAFN';
 import Button from '../Button';
 
 function SintacticAnalizer (){
-  const [afdTable, setAfdTable] = useState([]);
+  const [afdTable] = useState([]);
   const [sigma, setSigma] = useState('2.54*(12-78)/(13+17)');
-  const [myAFNs, setMyAFNs] = useAFNs();
+  const [myAFNs] = useAFNs();
   const [grammar, setGrammar] = useState(
 `E->E + T|E - T|T
 T->T * F|T / F|F
