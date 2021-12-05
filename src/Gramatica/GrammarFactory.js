@@ -127,9 +127,9 @@ function getLRTable(grammar) {
     state.items.forEach(item => {
       if(item.word.indexOf('.')===item.word.length-1){
         const follows = grammar.follow(item.state);
-        console.log(state.id);
+        /*console.log(state.id);
         console.log(item);
-        console.log(follows);
+        console.log(follows);*/
         state.reductions = follows.map( symbol =>{
           let idState;
           let idTransition;
@@ -158,5 +158,78 @@ function getLRTable(grammar) {
   return finalStates;
 }
 
-const GrammarFactory = {createGrammar, getLRTable};
+function getSintacticTable(LRTable, grammar, lexTable) {
+  console.log('sintactic table'); 
+  console.log(LRTable);
+  console.log(grammar);
+  console.log(lexTable);
+
+  let stack = [0];
+  //get symbols of expression
+  const symbols = lexTable.map((element)=>{
+    let symbol;
+    grammar.terminalsStructure.some(obj => {
+      if(obj.token === element[0]){
+        symbol= obj.symbol;
+        return true;
+      }
+    });
+    return symbol
+  })
+  //Make table
+  let sintacticTable = [];
+  let counter = 2;
+
+  while (counter>0) {
+    console.log('------');
+    console.log(stack);
+    const stackItem = stack[stack.length-1];
+    const stringItem = symbols[0];
+    console.log(stackItem+'-'+stringItem);
+    let accion = ''
+
+    //check for some displacement in the LR Table
+    LRTable[stackItem].transitions.some(element => {
+      if(element.symbol===stringItem){
+        accion = 'd'+element.state
+        stack.push(stringItem);
+        stack.push(parseInt(accion.charAt(1)));
+        symbols.shift();
+        return true
+      }
+    });
+    //check for some reduction in the LR Table
+    LRTable[stackItem].reductions.some(element => {
+      if(element.symbol===stringItem){
+        accion = 'r'+element.state
+
+        const coords = accion.slice(1,accion.length).split(',');
+        const item = {
+          state:grammar.rules[coords[0]].state,
+          word:grammar.rules[coords[0]].transitions[coords[1]]
+        }
+        console.log(item);
+        const numberOfItems =item.word.split(' ').length*2; 
+        //remove items from stack
+        for (let i = 0; i < numberOfItems; i++) {
+          stack.pop();
+        }
+        //add state of item
+        stack.push(item.state);
+        return true
+      }
+    });
+    console.log(accion);
+    
+    sintacticTable.push({
+      pila: stack.join(' '),
+      cadena: symbols.join(' '),
+      accion
+    }) 
+    counter--;
+  }
+  return sintacticTable;
+}
+
+const GrammarFactory = {createGrammar, getLRTable, getSintacticTable};
 export default GrammarFactory;

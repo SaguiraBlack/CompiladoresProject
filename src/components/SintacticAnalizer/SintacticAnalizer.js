@@ -10,8 +10,9 @@ import Button from '../Button';
 function SintacticAnalizer (){
   const [afdTable] = useState([]);
   const [LRTable, setLRTable] = useState([]);
+  const [sintacticTable, setSintacticTable] = useState([]);
   const [LRTableSymbols, setLRTableSymbols] = useState([]);
-  const [sigma, setSigma] = useState('2.54*(12-78)/(13+17)');
+  const [sigma, setSigma] = useState('2.54+78*10');
   const [myAFNs] = useAFNs();
   const [grammar, setGrammar] = useState(
 `E->E + T|T
@@ -30,7 +31,10 @@ F->( E )|num`)
       const AFD = myAFNs[afd].afn;
       console.log(AFD);
       const afdTable = AFNConverter.getAFDTable(AFD);
-      setLexTable(LexicalAnalizer.analizeString(afdTable, sigma));
+      let lxTable =LexicalAnalizer.analizeString(afdTable, sigma).filter(element=>
+        element[0]!==0
+      ); 
+      setLexTable(lxTable);
   }      
 
   function updateAFD(i) {
@@ -53,6 +57,12 @@ F->( E )|num`)
     console.log(lrtable);
   }
 
+
+  function sintacticAnalisis() {
+    const sintctable = GrammarFactory.getSintacticTable( LRTable, augmentedGrammar, lexTable);
+    setSintacticTable(sintctable);
+    console.log(sintctable);
+  }
   function setToken(value, i) {
     let grammarClone =  {...augmentedGrammar};  
     grammarClone.terminalsStructure[i].token=parseInt(value)
@@ -60,7 +70,7 @@ F->( E )|num`)
   }
 
   return (
-    <div className="flex pt-16 h-screen">
+    <div className="flex pt-16 h-screen pb-20">
       <div className="bg-white w-4/5">
         <h1 className="text-gray font-bold text-4xl p-6 text-center">
           Análisis LR(1)
@@ -74,7 +84,7 @@ F->( E )|num`)
                 spellCheck="false"/>
             </div>
             <div className="items-end text-right">
-              <Button label="Crear" onClick={analize} className=""/>
+              <Button label="1. Crear" onClick={analize} className=""/>
             </div>
           </div>
 
@@ -107,9 +117,7 @@ F->( E )|num`)
                   )
                 })}
               </div>
-              <div className="items-end text-right">
-                <Button label="Asignar tokens"/>
-              </div>
+              <span className="font-bold text-xl">2. Asignar tokens</span>
           </div>
 
           <div className="w-2/5 flex-col pl-6">
@@ -119,9 +127,6 @@ F->( E )|num`)
             <div>
               Tabla LR(1)
             </div>
-            <div className="items-end text-right">
-              <Button label="Crear Tabla" onClick={analize}/>
-            </div>   
             <div className="w-auto h-auto grid justify-items-center p-10">
                 <table className="divide-y divide-gray w-full">
                     <thead >
@@ -158,15 +163,11 @@ F->( E )|num`)
             </div>
           </div>
         </div>
-
-
+        <h2 className="text-gray font-bold text-2xl my-5">
+          Analizar Sintácticamente sigma
+        </h2>
         <div className="flex">
           <div className="ml-10 w-2/6 flex-col">
-            <div>
-              <h2 className="text-gray font-bold text-2xl my-5">
-                Analizar Sintácticamente sigma
-              </h2>
-            </div>
             <div>
               <h2 className="text-gray font-bold text-xl py-2">
                 Seleccionar AFD
@@ -189,7 +190,7 @@ F->( E )|num`)
                           onChange={e => setSigma(e.target.value)} value={sigma}>
                   </input>
               </article>
-              <Button label="Probar Léxico" onClick={analyzeString} />
+              <Button label="3. Probar Léxico" onClick={analyzeString} />
             </div>
           </div>
 
@@ -214,11 +215,10 @@ F->( E )|num`)
             </table>
           </div>
           <div className="w-4/6 h-auto grid justify-items-center overflow-x-scroll">
-              <Button label="Analizar sintácticamente"/>
+              <Button label="4. Analizar sintácticamente" onClick={sintacticAnalisis} />
               <table className="divide-y divide-gray w-full">
                   <thead >
                       <tr>
-                          <th className="p-1"></th>
                           <th className="p-1">Pila</th>
                           <th className="p-1">Cadena</th>
                           <th className="p-1">Accion</th>
@@ -234,21 +234,18 @@ F->( E )|num`)
                           )
                       })*/}
                       {
-                          afdTable?.map((element, index) => {
+                          sintacticTable?.map((element, index) => {
                               return(
                                   <tr key={index}>
-                                      <td className="p-2">
-                                          {index}
+                                      <td className="p-1 text-center">
+                                          {element.pila}
                                       </td>
-                                      {
-                                          element?.map((element, index) => {
-                                              return(
-                                                  <td className="p-2" key={index}>
-                                                      {element}
-                                                  </td>
-                                              );
-                                          })
-                                      }
+                                      <td className="p-1 text-center">
+                                          {element.cadena}
+                                      </td>
+                                      <td className="p-1 text-center">
+                                          {element.accion}
+                                      </td>
                                   </tr>
                               );
                           })
