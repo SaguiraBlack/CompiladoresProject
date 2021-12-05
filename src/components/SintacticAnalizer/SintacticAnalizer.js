@@ -10,6 +10,7 @@ import Button from '../Button';
 function SintacticAnalizer (){
   const [afdTable] = useState([]);
   const [LRTable, setLRTable] = useState([]);
+  const [LRTableSymbols, setLRTableSymbols] = useState([]);
   const [sigma, setSigma] = useState('2.54*(12-78)/(13+17)');
   const [myAFNs] = useAFNs();
   const [grammar, setGrammar] = useState(
@@ -46,6 +47,7 @@ F->( E )|num`)
 
     console.log(augmentedGrammar);
     setAugmentedGrammar(augmentedGrammar)
+    setLRTableSymbols(augmentedGrammar.terminals.concat(augmentedGrammar.noTerminals).concat(['$']));
     const lrtable =GrammarFactory.getLRTable(augmentedGrammar) 
     setLRTable(lrtable);
     console.log(lrtable);
@@ -125,11 +127,9 @@ F->( E )|num`)
                     <thead >
                         <tr >
                             <th className="p-1">No Terminal</th>
-                            {augmentedGrammar && augmentedGrammar.terminals.concat(augmentedGrammar.noTerminals).map((symb, i)=>{
+                            {augmentedGrammar && LRTableSymbols.map((symb, i)=>{
                               return <th key={i} className="px-2 border-2">{symb}</th>
                             })}
-                            <th className="p-1">$</th>
-
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-middle">
@@ -137,9 +137,10 @@ F->( E )|num`)
                             return(
                                 <tr key={i}>
                                   <td className="p-1">{i}</td>
-                                  {augmentedGrammar && augmentedGrammar.terminals.concat(augmentedGrammar.noTerminals).map((symb, i)=>{
+                                  {augmentedGrammar && LRTableSymbols.map((symb, i)=>{
                                     let state = ''
-                                    const haveTransition = obj.transitions.some(element => {
+                                    const haveTransition = obj.transitions.concat(obj.reductions).some(element => {
+                                      if(element==null)return
                                       state = element.state;
                                       return element.symbol===symb;
                                     });

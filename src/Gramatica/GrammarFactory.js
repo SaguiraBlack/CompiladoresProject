@@ -113,13 +113,48 @@ function getLRTable(grammar) {
     {
       items:lock0,
       id: 0,
-      transitions: []
+      transitions: [],
+      reductions: []
     }];
 
+    //get common transitions
   while (stack.length>0) {
     const currentState = stack.shift();
     analizeSingleState(grammar, currentState, finalStates, stack)
   }
+  //get reduction transitions
+  finalStates.forEach(state => {
+    state.items.forEach(item => {
+      if(item.word.indexOf('.')===item.word.length-1){
+        const follows = grammar.follow(item.state);
+        console.log(state.id);
+        console.log(item);
+        console.log(follows);
+        state.reductions = follows.map( symbol =>{
+          let idState;
+          let idTransition;
+
+          grammar.rules.forEach((rule, i) => {
+            if(rule.state===item.state){
+              idState=i;
+              rule.transitions.forEach((transition, j) => {
+                if(transition===item.word.replace('.','')){
+                  idTransition = j;
+                }
+              });
+            } 
+          });
+
+          const coords = idState===0?'aceptar':idState+','+idTransition 
+          return {
+            symbol,
+            state: coords 
+          }
+        })
+      }
+    }); 
+  });
+
   return finalStates;
 }
 

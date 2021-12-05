@@ -118,11 +118,8 @@ export default class Grammar{
 							firstNext.splice(idxEpsilon, 1);
 							follow = follow.concat(firstNext).concat(this.follow(rule.state));
 						}
-						console.log(nextSymbol);
-						console.log(firstNext);
 					// 3)
 					}else{
-						console.log('ultimo simbolo');
 						follow = follow.concat(this.follow(rule.state));
 					}
 				}
