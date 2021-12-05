@@ -161,6 +161,10 @@ function getLRTable(grammar) {
 function findTransition(LRTable, state, symbol) {
   let nextState = '';
   LRTable[state].transitions.concat(LRTable[state].reductions).some(element => {
+    if(element==null){
+      nextState = 'no acepta';
+      return true;
+    }
     if(element.symbol===symbol){
       nextState = element.state
       return true
@@ -189,7 +193,7 @@ function getSintacticTable(LRTable, grammar, lexTable) {
   symbols.push('$')
   //Make table
   let sintacticTable = [];
-  let counter = 11;
+  let counter = 2400;
   let accion = ''
   let currentState = 0;
 
@@ -207,16 +211,17 @@ function getSintacticTable(LRTable, grammar, lexTable) {
     }) 
     //add state number to stack
     if(isNaN(stackItem)){
-      console.log('no es numero');
       const nextState = findTransition(LRTable, currentState, stackItem);
       console.log(nextState);
+      
       stack.push(nextState);
     }else{
       console.log(stack);
       console.log(stackItem+'-'+stringItem);
 
       //check for some displacement or reduction in the LR Table
-      const nextState = findTransition(LRTable, stackItem, stringItem);
+      let nextState = findTransition(LRTable, stackItem, stringItem);
+      if(nextState==='')nextState='no acepta'
       console.log('nextState: ', nextState);
       //desplazamiento
       if (!isNaN(nextState)) {
@@ -228,8 +233,12 @@ function getSintacticTable(LRTable, grammar, lexTable) {
           symbols.shift();
       //reducccion
       } else {
+          if(nextState==='aceptar' || nextState==='no acepta'){
+            accion = nextState
+            sintacticTable[sintacticTable.length-1].accion = accion; 
+            break;
+          } 
           accion = 'r'+nextState
-
           const coords = accion.slice(1,accion.length).split(',');
           const item = {
             state:grammar.rules[coords[0]].state,
@@ -241,6 +250,8 @@ function getSintacticTable(LRTable, grammar, lexTable) {
           for (let i = 0; i < numberOfItems; i++) {
             stack.pop();
           }
+          currentState=stack[stack.length-1];
+          console.log('CURRENT STATE: ', currentState);
           //add state of item
           stack.push(item.state);//f
       }
@@ -249,11 +260,6 @@ function getSintacticTable(LRTable, grammar, lexTable) {
       counter--;
     }
   } //End While
-    sintacticTable.push({
-      pila: stack.join(' '),
-      cadena: symbols.join(' '),
-      accion
-    }) 
   return sintacticTable;
 }
 

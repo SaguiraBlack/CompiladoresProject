@@ -12,11 +12,11 @@ function SintacticAnalizer (){
   const [LRTable, setLRTable] = useState([]);
   const [sintacticTable, setSintacticTable] = useState([]);
   const [LRTableSymbols, setLRTableSymbols] = useState([]);
-  const [sigma, setSigma] = useState('2.54+78*10');
+  const [sigma, setSigma] = useState('2.54*(12-78/13+17)');
   const [myAFNs] = useAFNs();
   const [grammar, setGrammar] = useState(
-`E->E + T|T
-T->T * F|F
+`E->E + T|E - T|T
+T->T * F|T / F|F
 F->( E )|num`)
   //Select AFD
   const [afd, setAfd] = useState(-1);
@@ -34,6 +34,14 @@ F->( E )|num`)
       let lxTable =LexicalAnalizer.analizeString(afdTable, sigma).filter(element=>
         element[0]!==0
       ); 
+      augmentedGrammar.terminalsStructure.forEach(obj => {
+        lxTable.forEach(element => {
+          if(obj.symbol===element[1]){
+            obj.token = element[0]
+          } 
+        });
+      });
+      //console.log(lxTable);
       setLexTable(lxTable);
   }      
 
