@@ -6,7 +6,7 @@ class Footer extends React.Component {
         return (
             <footer className="bg-gray fixed bottom-0 w-full flex
                                px-8 py-2 text-white">
-                <div className="absolute inset-y-0 flex">
+                <div className="absolute bottom-0 inset-y-0 flex">
                     <div className="m-auto pr-3">
                        <Icon icon="akar-icons:github-fill" width="20" /> 
                     </div>

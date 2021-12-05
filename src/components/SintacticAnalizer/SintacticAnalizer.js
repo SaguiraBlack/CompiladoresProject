@@ -78,7 +78,7 @@ F->( E )|num`)
   }
 
   return (
-    <div className="flex pt-16 h-screen pb-20">
+    <div className="flex pt-16 h-screen pb-20 mb-28 relative">
       <div className="bg-white w-4/5">
         <h1 className="text-gray font-bold text-4xl p-6 text-center">
           Análisis LR(1)
@@ -226,7 +226,7 @@ F->( E )|num`)
               </div>
             </div>
             <div id="table2">
-            <div className="w-4/6 h-auto grid justify-items-center overflow-x-scroll">
+            <div className="w-full h-auto grid justify-items-center overflow-x-scroll">
                 <Button label="4. Analizar sintácticamente" onClick={sintacticAnalisis}/>
                 <table className="divide-y divide-gray w-full">
                     <thead >
