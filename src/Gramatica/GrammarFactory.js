@@ -158,6 +158,16 @@ function getLRTable(grammar) {
   return finalStates;
 }
 
+function findTransition(LRTable, state, symbol) {
+  let nextState = '';
+  LRTable[state].transitions.concat(LRTable[state].reductions).some(element => {
+    if(element.symbol===symbol){
+      nextState = element.state
+      return true
+    }
+  });
+  return nextState;
+}
 function getSintacticTable(LRTable, grammar, lexTable) {
   console.log('sintactic table'); 
   console.log(LRTable);
@@ -176,58 +186,74 @@ function getSintacticTable(LRTable, grammar, lexTable) {
     });
     return symbol
   })
+  symbols.push('$')
   //Make table
   let sintacticTable = [];
-  let counter = 2;
+  let counter = 11;
+  let accion = ''
+  let currentState = 0;
 
   while (counter>0) {
     console.log('------');
-    console.log(stack);
-    const stackItem = stack[stack.length-1];
-    const stringItem = symbols[0];
-    console.log(stackItem+'-'+stringItem);
-    let accion = ''
+    //Pila
+    let stackItem = stack[stack.length-1];
+    //Cadena
+    let stringItem = symbols[0];
 
-    //check for some displacement in the LR Table
-    LRTable[stackItem].transitions.some(element => {
-      if(element.symbol===stringItem){
-        accion = 'd'+element.state
-        stack.push(stringItem);
-        stack.push(parseInt(accion.charAt(1)));
-        symbols.shift();
-        return true
-      }
-    });
-    //check for some reduction in the LR Table
-    LRTable[stackItem].reductions.some(element => {
-      if(element.symbol===stringItem){
-        accion = 'r'+element.state
-
-        const coords = accion.slice(1,accion.length).split(',');
-        const item = {
-          state:grammar.rules[coords[0]].state,
-          word:grammar.rules[coords[0]].transitions[coords[1]]
-        }
-        console.log(item);
-        const numberOfItems =item.word.split(' ').length*2; 
-        //remove items from stack
-        for (let i = 0; i < numberOfItems; i++) {
-          stack.pop();
-        }
-        //add state of item
-        stack.push(item.state);
-        return true
-      }
-    });
-    console.log(accion);
-    
     sintacticTable.push({
       pila: stack.join(' '),
       cadena: symbols.join(' '),
       accion
     }) 
-    counter--;
-  }
+    //add state number to stack
+    if(isNaN(stackItem)){
+      console.log('no es numero');
+      const nextState = findTransition(LRTable, currentState, stackItem);
+      console.log(nextState);
+      stack.push(nextState);
+    }else{
+      console.log(stack);
+      console.log(stackItem+'-'+stringItem);
+
+      //check for some displacement or reduction in the LR Table
+      const nextState = findTransition(LRTable, stackItem, stringItem);
+      console.log('nextState: ', nextState);
+      //desplazamiento
+      if (!isNaN(nextState)) {
+          accion = 'd'+nextState
+          currentState = stack[stack.length-1];
+          console.log('CURRENT STATE: ', currentState);
+          stack.push(stringItem);
+          stack.push(parseInt(accion.charAt(1)));
+          symbols.shift();
+      //reducccion
+      } else {
+          accion = 'r'+nextState
+
+          const coords = accion.slice(1,accion.length).split(',');
+          const item = {
+            state:grammar.rules[coords[0]].state,
+            word:grammar.rules[coords[0]].transitions[coords[1]]
+          }
+          console.log(item);
+          const numberOfItems =item.word.split(' ').length*2; 
+          //remove items from stack
+          for (let i = 0; i < numberOfItems; i++) {
+            stack.pop();
+          }
+          //add state of item
+          stack.push(item.state);//f
+      }
+      console.log(accion);
+      sintacticTable[sintacticTable.length-1].accion = accion; 
+      counter--;
+    }
+  } //End While
+    sintacticTable.push({
+      pila: stack.join(' '),
+      cadena: symbols.join(' '),
+      accion
+    }) 
   return sintacticTable;
 }
 
