@@ -9,11 +9,12 @@ import Button from '../Button';
 
 function SintacticAnalizer (){
   const [afdTable] = useState([]);
+  const [LRTable, setLRTable] = useState([]);
   const [sigma, setSigma] = useState('2.54*(12-78)/(13+17)');
   const [myAFNs] = useAFNs();
   const [grammar, setGrammar] = useState(
-`E->E + T|E - T|T
-T->T * F|T / F|F
+`E->E + T|T
+T->T * F|F
 F->( E )|num`)
   //Select AFD
   const [afd, setAfd] = useState(-1);
@@ -39,9 +40,15 @@ F->( E )|num`)
     const items = [{state: "E", word: 'E.+T' }, {state: "E", word: 'E.-T' }, {state: "E", word: '.T' }]
     const augmentedGrammar = GrammarFactory.createGrammar(grammar);
     const goToItems = augmentedGrammar.goTo(items, '-')
+
+    const follow = augmentedGrammar.follow("F");
+    console.log(follow);
+
     console.log(augmentedGrammar);
     setAugmentedGrammar(augmentedGrammar)
-    console.log(GrammarFactory.getLRTable(augmentedGrammar));
+    const lrtable =GrammarFactory.getLRTable(augmentedGrammar) 
+    setLRTable(lrtable);
+    console.log(lrtable);
   }
 
   function setToken(value, i) {
@@ -118,18 +125,30 @@ F->( E )|num`)
                     <thead >
                         <tr >
                             <th className="p-1">No Terminal</th>
-                            {augmentedGrammar && augmentedGrammar.terminals.map((symb, i)=>{
-                              return <th key={i}>{symb}</th>
+                            {augmentedGrammar && augmentedGrammar.terminals.concat(augmentedGrammar.noTerminals).map((symb, i)=>{
+                              return <th key={i} className="px-2 border-2">{symb}</th>
                             })}
+                            <th className="p-1">$</th>
 
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-middle">
-                        {lexTable.map((obj, i)=>{
+                        {LRTable.map((obj, i)=>{
                             return(
                                 <tr key={i}>
-                                    <td className="p-1">{obj[1]}</td>
-                                    <td className="p-1">{obj[0]}</td>
+                                  <td className="p-1">{i}</td>
+                                  {augmentedGrammar && augmentedGrammar.terminals.concat(augmentedGrammar.noTerminals).map((symb, i)=>{
+                                    let state = ''
+                                    const haveTransition = obj.transitions.some(element => {
+                                      state = element.state;
+                                      return element.symbol===symb;
+                                    });
+                                    if(haveTransition){
+                                        return <th key={i} className="px-2 border-2">{state}</th>
+                                    }else{
+                                      return <th key={i} className="px-2 border-2"></th>
+                                    }
+                                  })}
                                 </tr>
                             )
                         })}

@@ -30,74 +30,97 @@ function createGrammar(expression){
       })
     });
   });
-  rulesGrammar = rulesGrammar.map(rule=>{
+  /*rulesGrammar = rulesGrammar.map(rule=>{
     return {
       state: rule.state,
       transitions: rule.transitions.map(transition=> transition.split(' ').join(''))
     }
-  })
+  })*/
 
 	let grammar = new Grammar(terminals, noTerminals, rulesGrammar[0].state, rulesGrammar, terminalsStructure);
 	return grammar;
 }
 
-
-
-function getGraphFormatFromItems(itemsGroup) {
-  
-}
-
 function AreEqualStates(stateA, stateB) {
   if(stateA.length!==stateB.length) return false;
+  let equals = true;
   stateA.forEach((element,i) => {
     if (element.state!==stateB[i].state ||
         element.word!==stateB[i].word ) {
-          return false;
+          equals=false;
     } 
   });
-  return true;
+  return equals;
 }
 
-function analizeForSymbol(symbol, grammar, state, finalStates) {
-    console.log(symbol);
+function analizeSingleState(grammar, state, finalStates, stack) {
+  //console.log(state.id);
+  //console.log(state.items);
+  const allSymbols = grammar.noTerminals.concat(grammar.terminals);
+
+  // check for no terminals and terminals coincidences
+  allSymbols.forEach(symbol => {
     let coincidences = [];
-    state.forEach(element => {
+    state.items.forEach(element => {
       if (element.word.indexOf('.')+1 === element.word.indexOf(symbol)){
         coincidences.push(element)
       }
     });
-    console.log('coincidences: '+coincidences.length);
-		if(coincidences.length>0){
-      //console.log(coincidences);
-      const newState = grammar.goTo(coincidences, symbol);
-      console.log('new state');
-      console.log(newState);
-      finalStates.forEach(element => {
-        if(AreEqualStates(newState, element)){
-          console.log('iguales!!');
-        }
-      });
-    }
-}
-function analizeSingleState(grammar, state, finalStates) {
-  console.log(state);
-  // check for no terminals coincidences
-  grammar.noTerminals.forEach(symbol => {
-    analizeForSymbol(symbol, grammar, state, finalStates);
-  }); 
 
-  // check for terminals coincidences
-  grammar.terminals.forEach(symbol => {
-    analizeForSymbol(symbol, grammar, state, finalStates);
+		if(coincidences.length>0){
+      //console.log(symbol+' - coincidences: '+coincidences.length);
+      const newState = grammar.goTo(coincidences, symbol);
+      //console.log(newState);
+      let alreadyPresent = false;
+      let transitionStateId = -1;
+      //check for transitions to previous states
+      alreadyPresent = finalStates.some(element =>{
+        transitionStateId = element.id
+        return AreEqualStates(newState, element.items) 
+      });
+      if(!alreadyPresent){
+          //New State!
+          //console.log('new state');
+          const newStateObj ={
+              items:newState,
+              id: finalStates.length,
+              transitions: []
+          }
+          transitionStateId=finalStates.length;
+          finalStates.push(newStateObj);
+          stack.push(newStateObj);
+      }
+      //define transition
+      finalStates[state.id].transitions.push({symbol, state: transitionStateId});
+
+    }
+
   }); 
 }
 
 function getLRTable(grammar) {
   const lock0 = grammar.lock([{state: "E'", word: '.E'}]);
-  let stack = [lock0];
-  let states = [lock0];
-  analizeSingleState(grammar, lock0, states)
-  return states;
+  //to track what states we have to check
+  let stack = [
+    {
+      items:lock0,
+      id: 0,
+      transitions: []
+    }];
+
+  //to track the final States
+  let finalStates = [
+    {
+      items:lock0,
+      id: 0,
+      transitions: []
+    }];
+
+  while (stack.length>0) {
+    const currentState = stack.shift();
+    analizeSingleState(grammar, currentState, finalStates, stack)
+  }
+  return finalStates;
 }
 
 const GrammarFactory = {createGrammar, getLRTable};
