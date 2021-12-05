@@ -12,7 +12,7 @@ function SintacticAnalizer (){
   const [LRTable, setLRTable] = useState([]);
   const [sintacticTable, setSintacticTable] = useState([]);
   const [LRTableSymbols, setLRTableSymbols] = useState([]);
-  const [sigma, setSigma] = useState('2.54*(12-78/13+17)');
+  const [sigma, setSigma] = useState('2.54*(12-78)/(13+17)');
   const [myAFNs] = useAFNs();
   const [grammar, setGrammar] = useState(
 `E->E + T|E - T|T

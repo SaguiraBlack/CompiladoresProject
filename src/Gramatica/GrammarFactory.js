@@ -229,7 +229,7 @@ function getSintacticTable(LRTable, grammar, lexTable) {
           currentState = stack[stack.length-1];
           console.log('CURRENT STATE: ', currentState);
           stack.push(stringItem);
-          stack.push(parseInt(accion.charAt(1)));
+          stack.push(parseInt(accion.slice(1,accion.length)));
           symbols.shift();
       //reducccion
       } else {
