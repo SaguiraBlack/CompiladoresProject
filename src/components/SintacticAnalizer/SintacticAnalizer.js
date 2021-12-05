@@ -226,7 +226,7 @@ F->( E )|num`)
               </div>
             </div>
             <div id="table2">
-            <div className="w-full h-auto grid justify-items-center overflow-x-scroll">
+            <div className="w-full h-auto grid justify-items-center overflow-x-scroll mb-32">
                 <Button label="4. Analizar sintácticamente" onClick={sintacticAnalisis}/>
                 <table className="divide-y divide-gray w-full">
                     <thead >
