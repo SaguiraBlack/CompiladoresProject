@@ -41,7 +41,9 @@ function Index (){
                 <section id="students" className="flex pt-10">
                     <article className="m-auto mr-5">
                         <div className="bg-gray-light w-40 h-40 rounded-full overflow-hidden m-auto">
-                            <img src={PalaciosLugo} alt="Palacios Lugo" className="w-full"/>
+                            <a href="https://github.com/alan-palacios" target="_blank">
+                                <img src={PalaciosLugo} alt="Palacios Lugo" className="w-full"/>
+                            </a> 
                         </div>
                         <div>
                             <h3 className="text-gray font-medium text-lg">Palacios Lugo Alan Yoltic</h3>
@@ -49,7 +51,9 @@ function Index (){
                     </article>
                     <article className="m-auto ml-5">
                         <div className="bg-gray-light w-40 h-40 rounded-full overflow-hidden m-auto">
+                        <a href="https://github.com/SaguiraBlack" target="_blank">
                             <img src={TovarEspejo} alt="Tovar Espejo" className="w-full"/>
+                        </a>
                         </div>
                         <div>
                             <h3 className="text-gray font-medium text-lg">Tovar Espejo M. Josefina</h3>
