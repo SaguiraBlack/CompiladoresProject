@@ -14,7 +14,7 @@ function App (){
     <AFNContext.Provider value={useProviderAFNs()}>
       <CreateAFNs />
       <BrowserRouter>
-        <div className="font-Montserrat">
+        <div className="font-Montserrat ">
           <Navbar/>
           <Routes/>
           <Footer/>

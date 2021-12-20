@@ -29,6 +29,7 @@ function RegexToAFN (props){
                     </input>
                 </article>
             </section>
+            (, ), +, |, *, ?, _, 
             <div className="w-auto h-auto grid justify-items-center p-10">
                 <img src={RegexImg} alt='Regular Expression'></img>
             </div>
